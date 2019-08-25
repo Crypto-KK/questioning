@@ -5,13 +5,14 @@
 
 {% block css %}
     <link href="{% static 'css/qa.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/code.css' %}">
 {% endblock css %}
 
 {% block content %}
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'news:list' %}">首页</a></li>
+            <li class="breadcrumb-item"><a href="#">首页</a></li>
             <li class="breadcrumb-item"><a href="{% url 'qa:unanswered_q' %}">问答</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ question.title }}</li>
         </ol>
@@ -20,12 +21,16 @@
         <a href="{% url 'qa:ask_question' %}" class="btn btn-primary pull-right">
             <i class="fa fa-pencil" aria-hidden="true"></i> 提问
         </a>
+        <a href="{% url 'qa:update_question' question.pk %}" class="btn btn-warning pull-right">
+            <i class="fa fa-pencil" aria-hidden="true"></i> 编辑
+        </a>
         {% if request.user.username == question.user.username %}
         <a href="{% url 'qa:delete_question' question.pk %}" class="btn btn-danger pull-right">
             <i class="fa fa-pencil" aria-hidden="true"></i> 删除
         </a>
         {% endif %}
-        <h4>{{ question.title }}</h4>
+        <h2>{{ question.title }}</h2>
+        <br>
     </div>
     <div class="row question" question-id="{{ question.id }}">
         <div class="col-md-1">
@@ -42,7 +47,7 @@
             </div>
         </div>
         <div class="col-md-11">
-            <p>{{ question.get_markdown|safe }}</p>
+            <p>{{ question.get_detail_markdown|safe }}</p>
             <div class="question-user pull-right">
                 <a href="{% url 'users:detail' question.user.username %}">{{ question.user.get_profile_name }} </a>
                 <span class="text-secondary"> {{ question.created_at|timesince }}提问</span>
@@ -53,13 +58,15 @@
                 {% endif %}
             </div>
         </div>
-        <a href="{% url 'qa:propose_answer' question.id %}" class="btn btn-primary pull-right" role="button">提交回答</a>
+
     </div>
     <div class="page-header">
         <h1>回答</h1>
     </div>
     <div class="row">
         <ul class="col-md-12">
+            <a href="#" class="btn btn-primary pull-right" role="button">我要回答</a>
+            <br><br><br>
             {% for answer in question.answer_set.all %}
                 {% include 'qa/answer_sample.html' with answer=answer %}
             {% empty %}

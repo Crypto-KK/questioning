@@ -1,6 +1,7 @@
 import uuid
 from collections import Counter, defaultdict
 
+import markdown
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
@@ -64,7 +65,7 @@ class Question(CreatedUpdatedMixin, models.Model):
     title = models.CharField(max_length=255, verbose_name='标题')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                              related_name='q_author', null=True, blank=True)
-    content = MDTextField()
+    content = MDTextField(verbose_name='内容')
     slug = models.SlugField(max_length=255, null=True, blank=True, verbose_name='url别名')
     status = models.CharField(max_length=1, choices=QUESTION_STATUS, default='O',
                               verbose_name='问题状态')
@@ -87,6 +88,13 @@ class Question(CreatedUpdatedMixin, models.Model):
 
     def get_markdown(self):
         return markdownify(self.content)
+
+    def get_detail_markdown(self):
+        return markdown.markdown(self.content, extensions=[
+                                      'markdown.extensions.extra',
+                                      'markdown.extensions.codehilite',
+                                      'markdown.extensions.toc',
+                                  ])
 
     def total_votes(self):
         '''获取总票数'''

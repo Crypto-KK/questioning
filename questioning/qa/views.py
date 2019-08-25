@@ -1,6 +1,6 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from django.views.generic import ListView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, UpdateView, DeleteView, DetailView, CreateView
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.http import JsonResponse
@@ -53,3 +53,57 @@ class UnAnsweredQuestionListView(QuestionListView):
             object_list=None, **kwargs)
         context['active'] = 'unanswered'
         return context
+
+
+class CreateQuestionView(LoginRequiredMixin, CreateView):
+    '''新增问题'''
+    model = Question
+    form_class = QuestionForm
+    template_name = 'qa/question_form.html'
+    message = '问题已经发布'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(CreateQuestionView, self).form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse_lazy('qa:unanswered_q')
+
+
+class QuestionDetailView(LoginRequiredMixin, DetailView):
+    '''问题详情内容'''
+    model = Question
+    template_name = 'qa/question_detail.html'
+    context_object_name = 'question'
+
+    def get_queryset(self):
+        return Question.objects.filter(pk=self.kwargs['pk'])
+
+
+class QuestionDeleteView(LoginRequiredMixin, AuthorRequiredMixin, DeleteView):
+    '''问题删除'''
+    model = Question
+    context_object_name = 'question'
+    template_name = 'qa/question_confirm_delete.html'
+    success_url = reverse_lazy('qa:unanswered_q')
+
+
+class QuestionUpdateView(LoginRequiredMixin, AuthorRequiredMixin, UpdateView):
+    '''问题编辑'''
+    model = Question
+    context_object_name = 'question'
+    template_name = 'qa/question_update.html'
+    form_class = QuestionForm
+    message = '编辑成功'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(QuestionUpdateView, self).form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse_lazy('qa:question_detail', kwargs={
+            'pk': self.kwargs['pk']
+        })
+
