@@ -125,3 +125,67 @@ class CreateAnswerView(LoginRequiredMixin, CreateView):
         return reverse_lazy('qa:question_detail', kwargs={
             'pk': self.kwargs['question_id']
         })
+
+
+@login_required
+@ajax_required
+@require_POST
+def question_vote(request):
+    '''给问题投票'''
+    question_id = request.POST['question']
+    value = True if request.POST['value'] == 'U' else False
+    question = Question.objects.get(pk=question_id)
+    users = question.votes.values_list('user', flat=True)
+
+    if request.user.pk in users and (
+        question.votes.get(user=request.user).value == value
+    ):
+        question.votes.get(user=request.user).delete()
+    else:
+        question.votes.update_or_create(user=request.user,
+                                        defaults={'value': value})
+
+    return JsonResponse({
+        'votes': question.total_votes()
+    })
+
+
+@login_required
+@ajax_required
+@require_POST
+def answer_vote(request):
+    '''给回答投票'''
+    answer_id = request.POST['answer']
+    value = True if request.POST['value'] == 'U' else False
+    answer = Answer.objects.get(pk=answer_id)
+    users = answer.votes.values_list('user', flat=True)
+
+
+    if request.user.pk in users and (
+        answer.votes.get(user=request.user).value == value
+    ):
+        answer.votes.get(user=request.user).delete()
+    else:
+        answer.votes.update_or_create(user=request.user,
+                                      defaults={'value': value})
+
+    return JsonResponse({
+        'votes': answer.total_votes()
+    })
+
+
+@login_required
+@ajax_required
+@require_POST
+def accept_answer(request):
+    '''接受回答'''
+    answer_id = request.POST['answer']
+    answer = Answer.objects.get(pk=answer_id)
+
+    if answer.question.user.username != request.user.username:
+        raise PermissionDenied()
+    answer.accept_answer()
+
+    return JsonResponse({
+        'status': 'true'
+    })

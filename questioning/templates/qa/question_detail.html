@@ -21,9 +21,12 @@
         <a href="{% url 'qa:ask_question' %}" class="btn btn-primary pull-right">
             <i class="fa fa-pencil" aria-hidden="true"></i> 提问
         </a>&nbsp;
+        {% if not question.has_answer %}
         <a href="{% url 'qa:update_question' question.pk %}" class="btn btn-warning pull-right">
             <i class="fa fa-pencil" aria-hidden="true"></i> 编辑
         </a>
+
+        {% endif %}
         {% if request.user.username == question.user.username %}
         <a href="{% url 'qa:delete_question' question.pk %}" class="btn btn-danger pull-right">
             <i class="fa fa-pencil" aria-hidden="true"></i> 删除
