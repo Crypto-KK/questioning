@@ -11,9 +11,10 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
 
     path('mdeditor/', include('mdeditor.urls')),
+    path('comments/', include('django_comments.urls')),
 
     path('qa/', include('questioning.qa.urls', namespace='qa')),
-
+    path('articles/', include('questioning.articles.urls', namespace='articles')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

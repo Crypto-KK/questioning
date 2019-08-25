@@ -8,7 +8,7 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'news:list' %}">首页</a></li>
+                <li class="breadcrumb-item"><a href="#">首页</a></li>
                 <li class="breadcrumb-item active"><a href="{% url 'articles:list' %}">文章</a></li>
             </ol>
         </nav>
@@ -35,7 +35,7 @@
                             {% for tag in article.tags.names %}
                                 <a href="#"><span class="badge badge-info">{{ tag }}</span></a>
                             {% endfor %}
-                            <a style="float:right" href="{% url 'articles:article' slug=article.slug %}" class="btn-sm btn-primary">阅读全文→</a>
+                            <a style="float:right" href="{% url 'articles:article' pk=article.pk %}" class="btn-sm btn-primary">阅读全文→</a>
                         </div>
                     </div>
                 {% empty %}

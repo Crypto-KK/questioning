@@ -3,12 +3,16 @@
 
 {% block title %}{{ article.title|title }} - {{ block.super }}{% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/code.css' %}">
+{% endblock css %}
+
 {% block content %}
     <!-- Page Content -->
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'news:list' %}">首页</a></li>
+                <li class="breadcrumb-item"><a href="#">首页</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'articles:list' %}">文章</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ article.title|title }}</li>
             </ol>
@@ -32,8 +36,10 @@
                 {% endthumbnail %}
                 <hr>
                 <!-- Post Content -->
-                <p class="card-text">{{ article.get_markdown|safe }}</p>
+                <p class="card-text">{{ article.get_detail_markdown|safe }}</p>
                 <hr>
+                <h2>评论</h2>
+                <br>
 
 
                 <!-- Single Comment -->
@@ -69,7 +75,7 @@
                                 {{ form.timestamp }}
                                 {{ form.security_hash }}
 
-                                <input type="hidden" name="next" value="{% url 'articles:article' article.slug %}"/>
+                                <input type="hidden" name="next" value="{% url 'articles:article' article.pk %}"/>
                                 <input class="btn btn-info" type="submit" value="提交" id="id_submit"/>
                             </form>
                         {% endif %}
@@ -88,8 +94,10 @@
                                 <i class="fa fa-pencil" aria-hidden="true"></i> 写文章</a>
 
                             {% if request.user.username == article.user.username %}
-                                <a class="btn btn-primary" href="{% url 'articles:edit_article' article.pk %}" title="编辑文章">
+                                <a class="btn btn-primary" href="{% url 'articles:edit_article' article.pk %}" title="编辑">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 编辑</a>
+                                <a class="btn btn-danger" href="{% url 'articles:delete_article' article.pk %}" title="删除">
+                                    <i class="fa fa-eraser" aria-hidden="true"></i> 删除</a>
                             {% endif %}
 
                         </div>

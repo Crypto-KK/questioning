@@ -17,12 +17,15 @@
             {% endthumbnail %}
         </div>
 
-        <div class="col-md-7">
+        <div class="col-md-5">
             <div class="card card-body"><p>{{ object.introduction }}</p></div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
             {{ object.get_profile_name }}
+            <br/>
+            <i class="fa fa-money" aria-hidden="true"></i>
+            {{object.money}}金币
             <br/>
             <i class="fa fa-envelope" aria-hidden="true"></i><a class="email" href="mailto:{{ object.email }}">   {{ object.email }}</a><br/>
             {% if object.job_title %}
@@ -35,6 +38,8 @@
             <!--自己的页面显示更新按钮-->
             {% if request.user.username == object.username %}
                 <a class="btn btn-primary" href="{% url 'users:update' %}">更新信息</a>
+                <a class="btn btn-warning" href="#">充值金币</a>
+
             {% endif %}
         </div>
     </div>

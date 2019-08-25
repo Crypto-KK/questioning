@@ -20,6 +20,9 @@ class User(AbstractUser):
     github = models.URLField(max_length=255, blank=True, null=True, verbose_name='Github链接')
     linkedin = models.URLField(max_length=255, blank=True, null=True, verbose_name='LinkedIn链接')
 
+    money = models.DecimalField(verbose_name='金币', max_digits=10,
+                                decimal_places=2, default=0.00)
+
     class Meta:
         verbose_name = '用户'
         verbose_name_plural = verbose_name

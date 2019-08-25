@@ -1,3 +1,4 @@
+import uuid
 from collections import defaultdict
 
 import markdown
@@ -41,7 +42,8 @@ class ArticleQuerySet(models.query.QuerySet):
 @python_2_unicode_compatible
 class Article(CreatedUpdatedMixin, models.Model):
 
-
+    # uuid_id = models.UUIDField(default=uuid.uuid4, primary_key=True,
+    #                            editable=False)
     title = models.CharField(max_length=255, verbose_name='标题')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
                              on_delete=models.SET_NULL, related_name='author',
