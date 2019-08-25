@@ -107,3 +107,21 @@ class QuestionUpdateView(LoginRequiredMixin, AuthorRequiredMixin, UpdateView):
             'pk': self.kwargs['pk']
         })
 
+
+class CreateAnswerView(LoginRequiredMixin, CreateView):
+    '''回答问题'''
+    model = Answer
+    fields = ['content']
+    message = '回答已提交'
+    template_name = 'qa/answer_form.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.question_id = self.kwargs['question_id']
+        return super(CreateAnswerView, self).form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, self.message)
+        return reverse_lazy('qa:question_detail', kwargs={
+            'pk': self.kwargs['question_id']
+        })

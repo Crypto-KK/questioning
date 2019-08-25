@@ -149,6 +149,13 @@ class Answer(CreatedUpdatedMixin, models.Model):
     def get_markdown(self):
         return markdownify(self.content)
 
+    def get_answer_markdown(self):
+        return markdown.markdown(self.content, extensions=[
+                                      'markdown.extensions.extra',
+                                      'markdown.extensions.codehilite',
+                                      'markdown.extensions.toc',
+                                  ])
+
     def total_votes(self):
         '''获取回答的总票数'''
         d = Counter(self.votes.values_list('value', flat=True))
