@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}赞乎{% endblock title %}</title>
-    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+{#    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">#}
     <meta name="description" content="赞乎问答社区">
     <meta name="author" content="__Jack__">
 
@@ -47,7 +47,7 @@
 
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item"><a class="nav-link" href="#">&nbsp;&nbsp;首页</a></li>&nbsp;&nbsp;
-                <li class="nav-item"><a class="nav-link" href="#">问答</a></li>&nbsp;&nbsp;
+                <li class="nav-item"><a class="nav-link" href="{% url 'qa:unanswered_q' %}">问答</a></li>&nbsp;&nbsp;
                 <li class="nav-item"><a class="nav-link" href="#">私信</a></li>&nbsp;&nbsp;
             </ul>
 
