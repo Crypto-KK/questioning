@@ -13,6 +13,10 @@ urlpatterns = [
     path("users/", include("questioning.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+
+    path(r'mdeditor/', include('mdeditor.urls'))
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

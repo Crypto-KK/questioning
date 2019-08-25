@@ -70,12 +70,16 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    'allauth.socialaccount.providers.github',
     "django_celery_beat",
-    'sorl.thumbnail'
+    'sorl.thumbnail',
+    'taggit',
+    'mdeditor',
 ]
 
 LOCAL_APPS = [
     "questioning.users.apps.UsersConfig",
+    "questioning.qa.apps.QaConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
