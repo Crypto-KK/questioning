@@ -26,10 +26,10 @@
 </head>
 <body>
 
-{% cache 3600 sidebar request.user.username %}
-  <nav class="navbar fixed-top navbar-expand-sm bg-light">
+{#{% cache 3600 sidebar request.user.username %}#}
+  <nav class="navbar fixed-top navbar-expand-sm bg-light" style="background-color: #e3f2fd;">
     <div class="container">
-        <a class="navbar-brand" href="#">Questioning &nbsp;&nbsp;</a>
+        <a class="navbar-brand" href="#">问答平台</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu"
                 aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -84,7 +84,7 @@
         </div>
     </div>
 </nav>
-{% endcache %}
+{#{% endcache %}#}
 
 <div class="mb-3"></div>
 <div class="container">

@@ -79,7 +79,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "questioning.users.apps.UsersConfig",
-    "questioning.qa.apps.QaConfig"
+    "questioning.qa.apps.QaConfig",
+    "questioning.articles.apps.ArticlesConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
