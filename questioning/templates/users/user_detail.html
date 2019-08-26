@@ -38,7 +38,7 @@
             <!--自己的页面显示更新按钮-->
             {% if request.user.username == object.username %}
                 <a class="btn btn-primary" href="{% url 'users:update' %}">更新信息</a>
-                <a class="btn btn-warning" href="#">充值金币</a>
+                <a class="btn btn-warning" href="{% url 'trade:deposit' %}">充值金币</a>
 
             {% endif %}
         </div>

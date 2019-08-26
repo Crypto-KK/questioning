@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/trade.css' %}">
+{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">首页</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'users:detail' request.user.username %}">个人中心</a></li>
+            <li class="breadcrumb-item active" aria-current="page">充值</li>
+        </ol>
+    </nav>
+    <h3>充值金额</h3><br>
+
+    <div class="card-group">
+      <div class="card mb-1 money" style="max-width: 12rem;">
+        <div class="card-body" id="money_5">
+          <h5 class="card-title">5元/50
+              <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">
+          </h5>
+        </div>
+      </div>
+      <div class="card mb-1 money" style="max-width: 12rem;">
+        <div class="card-body" id="money_10">
+          <h5 class="card-title">10元/120
+                            <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">
+          </h5>
+        </div>
+      </div>
+      <div class="card mb-1 money" style="max-width: 12rem;">
+        <div class="card-body" id="money_50">
+          <h5 class="card-title">50元/600
+                            <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">
+          </h5>
+        </div>
+      </div>
+        <div class="card mb-1 money" style="max-width: 12rem;">
+        <div class="card-body" id="money_100">
+          <h5 class="card-title">100元/1500
+                            <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">
+          </h5>
+        </div>
+      </div>
+          <div class="card mb-1 money" style="max-width: 12rem;">
+        <div class="card-body" id="money_other">
+          <h5 class="card-title">其他金额
+          </h5>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <div class="money-other">
+        请输入充值的金额：<input type="text" id="money-input">&nbsp; 元
+    </div>
+
+
+
+    <hr>
+    <h3>支付方式</h3>
+    <br>
+    <div>
+        <input type="radio" name="pay" checked="checked">
+        <img src="{% static 'img/alipay.png' %}" alt="" style="width: 140px; height: 50px;">
+{#        <input type="radio" name="pay">#}
+{#        <img src="{% static 'img/wechat.png' %}" alt="" style="width: 120px; height: 40px;">#}
+
+    </div>
+    <hr>
+
+    <div>
+
+    </div>
+    <div class="float-right">
+        <p id="all_money">总金额：0.00元</p>
+        <button type="button" class="btn btn-primary btn-lg" id="pay">确认支付</button>
+    </div>
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/trade.js' %}"></script>
+{% endblock %}

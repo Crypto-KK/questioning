@@ -24,6 +24,6 @@ class AuthorRequiredMixin(View):
     验证是否为作者
     '''
     def dispatch(self, request, *args, **kwargs):
-        if self.get_object().user.username != self.request.user.username:
-            raise PermissionDenied
+        if self.request.user.username != self.request.user.username:
+            raise PermissionDenied()
         return super(AuthorRequiredMixin, self).dispatch(request, *args, **kwargs)

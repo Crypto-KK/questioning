@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('qa/', include('questioning.qa.urls', namespace='qa')),
     path('articles/', include('questioning.articles.urls', namespace='articles')),
+    path('trade/', include('questioning.trade.urls', namespace='trade')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

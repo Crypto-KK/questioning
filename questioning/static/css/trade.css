@@ -1,0 +1,16 @@
+.money:hover {
+    background-color: antiquewhite;
+}
+
+.money-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.money-select {
+    background-color: antiquewhite;
+}
+
+.money-other {
+    display: none;
+}
