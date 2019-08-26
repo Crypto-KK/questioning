@@ -1,14 +1,12 @@
 from __future__ import unicode_literals
 
-import time
-from random import Random
-
 from django.db import models
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
 
 from questioning.trade import ORDER_STATUS
 from questioning.utils.models import CreatedUpdatedMixin
+from questioning.utils.helpers import convert_rmb_to_money
 
 @python_2_unicode_compatible
 class OrderInfo(CreatedUpdatedMixin, models.Model):
@@ -30,5 +28,10 @@ class OrderInfo(CreatedUpdatedMixin, models.Model):
 
     def __str__(self):
         return self.order_sn
+
+    def get_money(self):
+        """获取实际金币的数量"""
+        return convert_rmb_to_money(self.order_mount.to_integral())
+
 
 

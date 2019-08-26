@@ -18,9 +18,7 @@
     </nav>
 
     <div class="page-header">
-        <a href="{% url 'qa:ask_question' %}" class="btn btn-primary pull-right">
-            <i class="fa fa-pencil" aria-hidden="true"></i> 提问
-        </a>&nbsp;
+
         {% if not question.has_answer %}
         <a href="{% url 'qa:update_question' question.pk %}" class="btn btn-warning pull-right">
             <i class="fa fa-pencil" aria-hidden="true"></i> 编辑
@@ -32,7 +30,7 @@
             <i class="fa fa-pencil" aria-hidden="true"></i> 删除
         </a>
         {% endif %}
-        <h2>{{ question.title }}</h2>
+
         <br>
     </div>
     <div class="row question" question-id="{{ question.id }}">
@@ -40,16 +38,18 @@
             <div class="question-info options">
                 <h3 class="{% if question.has_answer %}bg-success text-white{% endif %}">{{ question.count_answers }}</h3>
                 <small class="text-secondary">回答</small>
-                <i id="questionUpVote" class="fa fa-chevron-up vote up-vote question-vote{% if request.user in question.get_upvoters %} vote
+                <br>
+                <i id="questionUpVote" class="fa fa-thumbs-o-up vote up-vote question-vote{% if request.user in question.get_upvoters %} vote
                 d{% endif %}"
                    aria-hidden="true" title="单击赞同，再次点击取消"></i>
                 <h3 id="questionVotes">{{ question.total_votes }}</h3>
-                <i id="questionDownVote" class="fa fa-chevron-down vote down-vote question-vote{% if request.user in question.get_downvoters %} voted
+                <i id="questionDownVote" class="fa fa-thumbs-o-down vote down-vote question-vote{% if request.user in question.get_downvoters %} voted
 {% endif %}" aria-hidden="true" title="单击反对，再次点击取消"></i>
                 <small class="text-secondary">投票</small>
             </div>
         </div>
         <div class="col-md-11">
+        <h1>{{ question.title }}</h1>
             <p>{{ question.get_detail_markdown|safe }}</p>
             <div class="question-user pull-right">
                 <a href="{% url 'users:detail' question.user.username %}">{{ question.user.get_profile_name }} </a>

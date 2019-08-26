@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}充值记录 - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <!-- Page Content -->
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">首页</a></li>
+                <li class="breadcrumb-item active"><a href="{% url 'users:detail' request.user %}">个人中心</a></li>
+                <li class="breadcrumb-item active" aria-current="page">充值记录</li>
+            </ol>
+        </nav>
+        <h2>共查询到{{ count }}条充值记录</h2><br>
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-12">
+
+
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">订单编号</th>
+                          <th scope="col">充值金额</th>
+                          <th scope="col">对应金币</th>
+                          <th scope="col">订单状态</th>
+                          <th scope="col">创建时间</th>
+                          <th scope="col">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+
+                {% for order in orders %}
+                    <tr>
+                        <th scope="row">{{ order.order_sn }}</th>
+                        <td>{{order.order_mount}}元</td>
+                        <td>{{ order.get_money }}</td>
+                        <td>{{ order.get_pay_status_display }}</td>
+                        <td>{{ order.created_at }}</td>
+                        <td><button class="btn btn-danger" data-ordersn="{{ order.order_sn }}">申请退款</button></td>
+                    </tr>
+                {% empty %}
+                    <h4 class="no-data">还没有充值记录</h4>
+                {% endfor %}
+                      </tbody>
+                    </table>
+
+                <br>
+
+                {% if is_paginated %}
+                    <ul class="pagination justify-content-center mb-4">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">←上一页</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#"><span>&larr;</span></a></li>
+                        {% endif %}
+                        {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item disabled"><a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">下一页→</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#"><span>&rarr;</span></a></li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+
+            </div>
+
+        </div>
+        <!-- /.row -->
+    </div>
+
+
+{% endblock content %}

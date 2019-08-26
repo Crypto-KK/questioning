@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}赞乎{% endblock title %}</title>
+    <title>{% block title %}问乎{% endblock title %}</title>
 {#    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">#}
-    <meta name="description" content="赞乎问答社区">
-    <meta name="author" content="__Jack__">
+    <meta name="description" content="问乎问答社区">
+    <meta name="author" content="liyuankun">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -27,9 +27,9 @@
 <body>
 
 {#{% cache 3600 sidebar request.user.username %}#}
-  <nav class="navbar fixed-top navbar-expand-sm bg-light" style="background-color: #e3f2fd;">
+  <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-primary" style="background-color: #e3f2fd;">
     <div class="container">
-        <a class="navbar-brand" href="#">问答平台</a>
+        <a class="navbar-brand" href="#">问乎Beta</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu"
                 aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -73,7 +73,14 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{% url 'users:detail' request.user.username %}">
-                                <i class="fa fa-cogs fa-fw" aria-hidden="true"></i> 设置</a>
+                                个人中心</a>
+                            <a class="dropdown-item" href="{% url 'trade:deposit' %}">
+                                充值金币</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'qa:ask_question' %}">
+                                提问</a>
+                            <a class="dropdown-item" href="{% url 'articles:write_new' %}">
+                                创作</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url 'account_logout' %}">
                                 <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> 退出</a>

@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.views.generic import ListView
 from django.views.generic.base import View, TemplateView
 from rest_framework.response import Response
 
@@ -153,3 +154,17 @@ class PaySuccessView(LoginRequiredMixin, AuthorRequiredMixin, View):
             'status': 'fail'
         })
 
+
+class OrderInfoView(LoginRequiredMixin, AuthorRequiredMixin, ListView):
+    template_name = 'trade/order_list.html'
+    context_object_name = 'orders'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return OrderInfo.objects.filter(user=self.request.user).order_by('-created_at')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(OrderInfoView, self).get_context_data(object_list=None, **kwargs)
+        context['count'] = self.get_queryset().count()
+
+        return context

@@ -128,7 +128,7 @@ $(function () {
 
 
     function updateAllMoney() {
-        all_money_label.text('总金额' + money + '.00元')
+        all_money_label.text('金额 ' + money + '.00元')
     }
 
     function removeSelect() {
