@@ -51,6 +51,12 @@ class ConfirmPayView(LoginRequiredMixin, AuthorRequiredMixin, View):
 
 
 class AlipayView(LoginRequiredMixin, AuthorRequiredMixin, View):
+    """
+    支付宝支付
+    get方法实现支付宝return_url，如果没有实现也无所谓，post同样可以更新状态
+    post方法实现支付宝notify_url，异步更新
+
+    支付宝返回的url如下：
     #http://127.0.0.1:8000/alipay/return/?
     # charset=utf-8&
     # out_trade_no=201902923423436&
@@ -63,14 +69,9 @@ class AlipayView(LoginRequiredMixin, AuthorRequiredMixin, View):
     # sign_type=RSA2&
     # seller_id=2088102177296610&
     # timestamp=2019-08-26+13%3A51%3A01
-    def get(self, request):
-        """处理支付宝return_url返回"""
-        processed_dict = {}
-        for key, value in request.GET.items():
-            processed_dict[key] = value
-        sign = processed_dict.pop('sign', None)
-
-        alipay = AliPay(
+    """
+    def dispatch(self, request, *args, **kwargs):
+        self.alipay = AliPay(
             appid=settings.ALIPAY_APPID,
             app_notify_url=settings.APP_NOTIFY_URL,
             app_private_key_path=settings.APP_PRIVATE_KEY_PATH,
@@ -79,29 +80,57 @@ class AlipayView(LoginRequiredMixin, AuthorRequiredMixin, View):
             return_url=settings.RETURN_URL
         )
 
-        #验证签名
-        verify_re = alipay.verify(processed_dict, sign)
+        callback_data = {}
+        for key, value in request.GET.items():
+            callback_data[key] = value
+        sign = callback_data.pop('sign', None)
+        self.order_sn = callback_data.get('out_trade_no', None)
+        self.trade_no = callback_data.get('trade_no', None)
 
-        if verify_re:
-            order_sn = processed_dict.get('out_trade_no', None)
-            trade_no = processed_dict.get('trade_no', None)
+        # 验证签名
+        self.verify = self.alipay.verify(callback_data, sign)
+        return super(AlipayView, self).dispatch(request, *args, **kwargs)
 
-            #数据库中查询订单记录
-            order = OrderInfo.objects.get(order_sn=order_sn)
-            order.trade_no = trade_no  #支付宝订单号
 
-            #把人民币转换成对应的金币
-            # ￥5 = 50金币 ￥10 = 120金币 ￥50 = 600金币 ￥100 = 1500金币
-            rmb = order.order_mount
-            money = convert_rmb_to_money(rmb)
+    def get(self, request):
+        """处理支付宝return_url返回"""
 
-            order.user.money += Decimal(money)
-            order.user.save()
-            order.pay_status = 'TRADE_SUCCESS'
-            order.save()
+        if self.verify:
+            self.deposit()
+            #返回个人中心页面
             return redirect(reverse('users:detail', kwargs={
                 'username': request.user.username
             }))
 
     def post(self, request):
-        pass
+        """
+        处理notify_url
+        """
+        if self.verify:
+            self.deposit()
+
+        return redirect(reverse('users:detail', kwargs={
+            'username': request.user.username
+        }))
+
+    def deposit(self):
+        """充值操作
+
+        1.更新用户的金币信息
+        2.更新订单状态为交易成功
+        """
+
+        # 数据库中查询订单记录
+        order = OrderInfo.objects.get(order_sn=self.order_sn)
+        order.trade_no = self.trade_no  # 支付宝订单号
+
+        # 把人民币转换成对应的金币
+        rmb = order.order_mount
+        money = convert_rmb_to_money(rmb)
+
+        # 更新用户的金币
+        order.user.money += Decimal(money)
+        order.user.save()
+        # 订单状态置为交易成功
+        order.pay_status = 'TRADE_SUCCESS'
+        order.save()
