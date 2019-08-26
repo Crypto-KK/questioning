@@ -1,4 +1,41 @@
 $(function () {
+
+    function getCookie(name) {
+        if (document.cookie && document.cookie.length) {
+            var cookies = document.cookie
+                .split(';')
+                .filter(function (cookie) {
+                    return cookie.indexOf(name + "=") !== -1;
+                })[0];
+            try {
+                return decodeURIComponent(cookies.trim().substring(name.length + 1));
+            } catch (e) {
+                if (e instanceof TypeError) {
+                    console.info("No cookie with key \"" + name + "\". Wrong name?");
+                    return null;
+                }
+                throw e;
+            }
+        }
+        return null;
+    }
+
+    function csrfSafeMethod(method) {
+        // These HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    var csrftoken = getCookie('csrftoken');
+    // This sets up every ajax call with proper headers.
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+
     let money = 0.00;
     let all_money_label = $('#all_money');
     let money_5 = $('#money_5');
@@ -39,8 +76,27 @@ $(function () {
     $('#pay').click(function () {
         if (money === 0.00) {
             alert('请选择充值金额！');
+        } else {
+            $.ajax({
+            url: '/trade/pay/',
+            data: {
+                'money': money,
+            },
+            type: 'post',
+            cache: false,
+            success: function (data) {
+                if (data.pay_url) {
+                    window.open(data.pay_url)
+                } else {
+                }
+
+            }
+        });
+
         }
     });
+
+
 
     function updateAllMoney() {
         all_money_label.text('总金额' + money + '.00元')

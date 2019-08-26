@@ -1,11 +1,10 @@
 from datetime import datetime
+
+
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 from Crypto.Hash import SHA256
-from base64 import b64encode, b64decode
 from urllib.parse import quote_plus
-from urllib.parse import urlparse, parse_qs
-from urllib.request import urlopen
 from base64 import decodebytes, encodebytes
 
 import json
@@ -118,9 +117,9 @@ class AliPay(object):
         return self._verify(message, signature)
 
 
-def get_alipay_url(order_sn, order_mount):
+def get_alipay_url(app_id, order_sn, order_mount):
     alipay = AliPay(
-        appid="2016092600597838",
+        appid=app_id,
         app_notify_url="http://127.0.0.1:8000/alipay/return/",
         app_private_key_path="../trade/keys/private_2048.txt",
         alipay_public_key_path="../trade/keys/alipay_key_2048.txt",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
@@ -140,7 +139,8 @@ def get_alipay_url(order_sn, order_mount):
 
 if __name__ == "__main__":
     url = get_alipay_url(
-        '20190292342343',
+        '2016092600597838',
+        '201902923423436',
         1.00
     )
     print(url)

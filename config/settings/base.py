@@ -1,6 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
+import os
 
 import environ
 
@@ -81,7 +82,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "questioning.users.apps.UsersConfig",
     "questioning.qa.apps.QaConfig",
-    "questioning.articles.apps.ArticlesConfig"
+    "questioning.articles.apps.ArticlesConfig",
+    "questioning.trade.apps.TradeConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -224,6 +226,14 @@ EMAIL_HOST_USER = env('DJANGO_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('DJANGO_EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL')
 
+"""支付宝支付配置"""
+ALIPAY_APPID = env('ALIPAY_APPID')
+ALIPAY_DEBUG = True
+
+APP_PRIVATE_KEY_PATH = os.path.join(APPS_DIR, 'trade/keys/private_2048.txt')
+ALIPAY_PUBLIC_KEY_PATH = os.path.join(APPS_DIR, 'trade/keys/alipay_key_2048.txt')
+APP_NOTIFY_URL = "http://127.0.0.1:8000/trade/alipay/return/"
+RETURN_URL = "http://127.0.0.1:8000/trade/alipay/return/"
 
 # LOGGING
 # ------------------------------------------------------------------------------
