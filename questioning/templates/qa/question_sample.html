@@ -1,6 +1,6 @@
-{% load static  thumbnail %}
+{% load static  thumbnail process_string %}
 
-<div class="card questions">
+<div class="card questions single-question">
     <div class="card-body">
         <div class="question-info pull-left text-center">
             <h3 class="{% if question.has_answer %}bg-success text-white{% endif %}">{{ question.count_answers }}</h3>
@@ -12,7 +12,7 @@
             <h4 class="card-title">
                 <a href="{% url 'qa:question_detail' question.pk %}">{{ question.title }}</a>
             </h4>
-            <p>{{ question.get_markdown|safe|truncatechars:100 }}</p>
+            <p>{{ question.get_markdown|safe|removeHTML100 }}</p>
             <div class="question-user pull-right">
                 <a href="{% url 'users:detail' question.user.username %}">{{ question.user.get_profile_name }} </a>
                 <span class="text-secondary"> {{ question.created_at|timesince }}提问</span>

@@ -61,8 +61,11 @@ $(function () {
     });
 
     money_other.click(function () {
-        onMoneyClick($(this), 999.00);
-        $('.money-other').show()
+        onMoneyClick($(this), 0.00);
+        $('.money-other').show();
+        // $('#money-input').on('input propertychange', function () {
+        //     onMoneyClick($(this), $('#money-input').val())
+        // })
     });
 
     function onMoneyClick (obj, balance) {

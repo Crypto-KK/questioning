@@ -84,7 +84,7 @@ LOCAL_APPS = [
     "questioning.users.apps.UsersConfig",
     "questioning.qa.apps.QaConfig",
     "questioning.articles.apps.ArticlesConfig",
-    "questioning.trade.apps.TradeConfig"
+    "questioning.trade.apps.TradeConfig",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

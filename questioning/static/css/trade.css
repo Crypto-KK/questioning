@@ -1,5 +1,6 @@
 .money:hover {
     background-color: antiquewhite;
+    cursor: pointer;
 }
 
 .money-icon {

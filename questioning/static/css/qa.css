@@ -1,5 +1,14 @@
 .questions {
-    border-style: none none solid none;
+    border-style: solid solid solid solid;
+}
+
+.single-question {
+    margin-bottom: 10px;
+
+}
+
+.single-question:hover {
+    background-color: #F5FFFA;
 }
 
 .questions .pagination {
