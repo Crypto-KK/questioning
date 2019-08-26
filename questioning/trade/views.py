@@ -3,12 +3,13 @@ from datetime import datetime
 from decimal import Decimal
 from random import Random
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic.base import View, TemplateView
+from rest_framework.response import Response
 
 from questioning.utils.helpers import AuthorRequiredMixin, convert_rmb_to_money
 from questioning.utils.alipay import AliPay
@@ -36,7 +37,8 @@ class ConfirmPayView(LoginRequiredMixin, AuthorRequiredMixin, View):
         url = get_alipay_url(order_sn, order_mount)
 
         return JsonResponse({
-            'pay_url': url
+            'pay_url': url,
+            'order_sn': order_sn
         })
 
 
@@ -79,13 +81,13 @@ class AlipayView(LoginRequiredMixin, AuthorRequiredMixin, View):
             debug=settings.ALIPAY_DEBUG,
             return_url=settings.RETURN_URL
         )
-
+        #处理返回的url参数
         callback_data = {}
         for key, value in request.GET.items():
             callback_data[key] = value
         sign = callback_data.pop('sign', None)
-        self.order_sn = callback_data.get('out_trade_no', None)
-        self.trade_no = callback_data.get('trade_no', None)
+        self.order_sn = callback_data.get('out_trade_no', None) #订单号
+        self.trade_no = callback_data.get('trade_no', None) #支付宝订单号
 
         # 验证签名
         self.verify = self.alipay.verify(callback_data, sign)
@@ -109,9 +111,7 @@ class AlipayView(LoginRequiredMixin, AuthorRequiredMixin, View):
         if self.verify:
             self.deposit()
 
-        return redirect(reverse('users:detail', kwargs={
-            'username': request.user.username
-        }))
+        return Response('success')
 
     def deposit(self):
         """充值操作
@@ -134,3 +134,22 @@ class AlipayView(LoginRequiredMixin, AuthorRequiredMixin, View):
         # 订单状态置为交易成功
         order.pay_status = 'TRADE_SUCCESS'
         order.save()
+
+
+class PaySuccessView(LoginRequiredMixin, AuthorRequiredMixin, View):
+
+    def post(self, request):
+        order_sn = request.POST['order_sn']
+
+        order = OrderInfo.objects.get(order_sn=order_sn)
+        if order:
+            if order.pay_status == 'TRADE_SUCCESS':
+                #支付成功
+                return JsonResponse({
+                    'status': 'ok'
+                })
+
+        return JsonResponse({
+            'status': 'fail'
+        })
+

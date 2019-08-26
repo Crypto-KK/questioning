@@ -85,8 +85,10 @@ $(function () {
             type: 'post',
             cache: false,
             success: function (data) {
-                if (data.pay_url) {
+                if (data.pay_url && data.order_sn) {
+                    $('#order-sn').attr('data-ordersn', data.order_sn)
                     window.open(data.pay_url)
+
                 } else {
                 }
 
@@ -94,6 +96,30 @@ $(function () {
         });
 
         }
+    });
+
+    $('#pay-success').click(function () {
+        // 验证是否支付成功
+        $.ajax({
+            url: '/trade/pay/verify/',
+            data: {
+                order_sn: $('#order-sn').attr('data-ordersn')
+            },
+            type: 'post',
+            cache: false,
+            success: function (data) {
+                if (data.status === "ok") {
+                    alert('充值成功！');
+                    window.location.href = '/users/' + currentUser
+                } else {
+                    alert('充值失败，请重新充值！')
+                }
+            }
+        })
+    });
+
+    $('#pay-question').click(function () {
+        alert('如果付款了金币还没有到账，请联系客服！')
     });
 
 

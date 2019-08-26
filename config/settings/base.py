@@ -76,7 +76,8 @@ THIRD_PARTY_APPS = [
     'sorl.thumbnail',
     'taggit',
     'mdeditor',
-    'django_comments'
+    'django_comments',
+    'rest_framework'
 ]
 
 LOCAL_APPS = [
