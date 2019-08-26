@@ -1,5 +1,8 @@
 from __future__ import unicode_literals
 
+import time
+from random import Random
+
 from django.db import models
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
@@ -27,3 +30,17 @@ class OrderInfo(CreatedUpdatedMixin, models.Model):
 
     def __str__(self):
         return self.order_sn
+
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        '''保存到数据库时生成订单号'''
+        ranstr = Random()
+        order_sn = '{time_str}{userid}{ranstr}'.format(
+            time_str=time.strftime('%Y%m%d%H%M%S'),
+            userid=self.user.pk,
+            ranstr=ranstr.randint(10, 99)
+        )
+        self.order_sn = order_sn
+        super().save(force_insert=False, force_update=False, using=None,
+             update_fields=None)
