@@ -53,6 +53,7 @@ class Article(CreatedUpdatedMixin, models.Model):
     status = models.CharField(max_length=1, choices=STATUS, default='D',verbose_name='状态')
     content = MDTextField(verbose_name='内容')
     edited = models.BooleanField(default=False, verbose_name='是否可编辑')
+    view_num = models.IntegerField(default=0, verbose_name='阅读数')
     tags = TaggableManager(help_text='多个标签，使用,隔开')
 
     objects = ArticleQuerySet.as_manager()

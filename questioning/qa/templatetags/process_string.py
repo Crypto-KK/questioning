@@ -1,4 +1,5 @@
 import re
+from datetime import datetime, timedelta
 
 from django import template
 
@@ -31,3 +32,20 @@ def process_title(value):
 @register.filter
 def process_comment_content(value):
     return value[:50] + '...'
+
+
+@register.filter
+def process_time(value):
+    value = datetime.strptime(value.strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S')
+    now = datetime.now()
+    time_delta = now - value
+    if time_delta < timedelta(days=0, hours=1):
+        temp = (time_delta.seconds - (time_delta.seconds / 3600) * 3600) / 60
+        value = '%s分钟前' % temp
+    elif time_delta < timedelta(days=0, hours=24):
+        value = '%s小时%s分钟前' % (
+        time_delta.seconds // 3600, (time_delta.seconds - (time_delta.seconds / 3600) * 3600) / 60)
+    else:
+        value = '%s天前' % (time_delta.days)
+
+    return value

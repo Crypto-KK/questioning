@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load comments %}
+
+{% block title %}文章管理 - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <!-- Page Content -->
+    <div class="container">
+
+        <h2>共发表{{ count }}篇文章</h2><br>
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-12">
+
+
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">标题</th>
+                          <th scope="col">阅读量</th>
+                          <th scope="col">评论数</th>
+                          <th scope="col">状态</th>
+                          <th scope="col">发表时间</th>
+                          <th scope="col">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+
+                {% for article in articles %}
+                    {% get_comment_count for article as comment_count %}
+                    <tr>
+                        <th scope="row"><a href="{% url 'articles:article' article.pk %}">{{ article.title|truncatechars:15 }}</a></th>
+                        <td>{{ article.view_num }}</td>
+                        <td>{{ comment_count }}</td>
+                        <td>{{ article.get_status_display }}</td>
+                        <td>{{ article.created_at }}</td>
+                        <td>
+                            <button class="btn btn-warning" data-ordersn="{{ article.pk }}">编辑</button>
+                            <button class="btn btn-danger" data-ordersn="{{ article.pk }}">删除</button>
+                        </td>
+
+
+
+                    </tr>
+                {% empty %}
+                    <h4 class="no-data">还没有发表文章</h4>
+                {% endfor %}
+                      </tbody>
+                    </table>
+
+                <br>
+
+                {% include 'pagination.html' %}
+
+            </div>
+
+        </div>
+        <!-- /.row -->
+    </div>
+
+
+{% endblock content %}

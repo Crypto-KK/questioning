@@ -84,3 +84,17 @@ class ArticleDeleteView(LoginRequiredMixin, AuthorRequiredMixin, DeleteView):
     context_object_name = 'article'
     template_name = 'articles/article_confirm_delete.html'
     success_url = reverse_lazy('articles:list')
+
+
+class ArticleManageView(LoginRequiredMixin, AuthorRequiredMixin, ListView):
+    context_object_name = 'articles'
+    template_name = 'articles/article_manage.html'
+
+    def get_queryset(self):
+        return Article.objects.filter(user=self.request.user).order_by('-created_at')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['count'] = self.get_queryset().count()
+        return context

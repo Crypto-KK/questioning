@@ -98,7 +98,7 @@
 }
 
 .answer .answer-user .username, .question .question-user .username {
-    margin-left: .4em;
+    margin-left: .7em;
 }
 
 .answer .answered, .question .asked {
@@ -143,4 +143,8 @@
 
 .glyphicon-star-empty {
     font-size: 1em;
+}
+
+.answer-description {
+    margin-left: 3.8rem;
 }

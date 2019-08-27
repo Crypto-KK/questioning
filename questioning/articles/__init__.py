@@ -1,4 +1,4 @@
 STATUS = (
-    ('D', 'Draft'),
-    ('P', 'published')
+    ('D', '草稿'),
+    ('P', '发布')
 )
