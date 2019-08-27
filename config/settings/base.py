@@ -78,7 +78,9 @@ THIRD_PARTY_APPS = [
     'taggit',
     'mdeditor',
     'django_comments',
-    'rest_framework'
+    'rest_framework',
+
+    'corsheaders'
 ]
 
 LOCAL_APPS = [
@@ -136,6 +138,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -199,7 +202,7 @@ TEMPLATES = [
 ]
 # http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-
+CORS_ORIGIN_ALLOW_ALL = True
 # FIXTURES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#fixture-dirs
@@ -234,10 +237,11 @@ DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL')
 ALIPAY_APPID = env('ALIPAY_APPID')
 ALIPAY_DEBUG = True
 
+SITE_URL = '39.108.181.193:8000'
 APP_PRIVATE_KEY_PATH = os.path.join(APPS_DIR, 'trade/keys/private_2048.txt')
 ALIPAY_PUBLIC_KEY_PATH = os.path.join(APPS_DIR, 'trade/keys/alipay_key_2048.txt')
-APP_NOTIFY_URL = "http://127.0.0.1:8000/trade/alipay/return/"
-RETURN_URL = "http://127.0.0.1:8000/trade/alipay/return/"
+APP_NOTIFY_URL = f"http://{SITE_URL}/trade/alipay/return/"
+RETURN_URL = f"http://{SITE_URL}/trade/alipay/return/"
 
 # LOGGING
 # ------------------------------------------------------------------------------

@@ -8,6 +8,8 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
 from django.views.generic.base import View, TemplateView
 from rest_framework.response import Response
@@ -16,6 +18,7 @@ from questioning.utils.helpers import AuthorRequiredMixin, convert_rmb_to_money
 from questioning.utils.alipay import AliPay
 from questioning.utils.helpers import get_alipay_url
 from questioning.trade.models import OrderInfo
+from trade import Status
 
 
 class DepositView(LoginRequiredMixin, AuthorRequiredMixin, TemplateView):
@@ -52,8 +55,8 @@ class ConfirmPayView(LoginRequiredMixin, AuthorRequiredMixin, View):
         )
         return order_sn
 
-
-class AlipayView(LoginRequiredMixin, AuthorRequiredMixin, View):
+@method_decorator(csrf_exempt, name='dispatch')
+class AlipayView(View):
     """
     支付宝支付
     get方法实现支付宝return_url，如果没有实现也无所谓，post同样可以更新状态
@@ -80,18 +83,25 @@ class AlipayView(LoginRequiredMixin, AuthorRequiredMixin, View):
             app_private_key_path=settings.APP_PRIVATE_KEY_PATH,
             alipay_public_key_path=settings.ALIPAY_PUBLIC_KEY_PATH,
             debug=settings.ALIPAY_DEBUG,
-            return_url=settings.RETURN_URL
+            return_url=settings.RETURN_URL,
         )
         #处理返回的url参数
-        callback_data = {}
-        for key, value in request.GET.items():
-            callback_data[key] = value
-        sign = callback_data.pop('sign', None)
-        self.order_sn = callback_data.get('out_trade_no', None) #订单号
-        self.trade_no = callback_data.get('trade_no', None) #支付宝订单号
+        self.callback_data = {}
+        if request.method == 'GET':
+            for key, value in request.GET.items():
+                self.callback_data[key] = value
+        elif request.method == 'POST':
+            for key, value in request.POST.items():
+                self.callback_data[key] = value
+
+        print(self.callback_data)
+
+        sign = self.callback_data.pop('sign', None)
+        self.order_sn = self.callback_data.get('out_trade_no', None) #订单号
+        self.trade_no = self.callback_data.get('trade_no', None) #支付宝订单号
 
         # 验证签名
-        self.verify = self.alipay.verify(callback_data, sign)
+        self.verify = self.alipay.verify(self.callback_data, sign)
         return super(AlipayView, self).dispatch(request, *args, **kwargs)
 
 
@@ -109,10 +119,11 @@ class AlipayView(LoginRequiredMixin, AuthorRequiredMixin, View):
         """
         处理notify_url
         """
+
         if self.verify:
             self.deposit()
 
-        return Response('success')
+        return HttpResponse('success')
 
     def deposit(self):
         """充值操作
@@ -133,7 +144,10 @@ class AlipayView(LoginRequiredMixin, AuthorRequiredMixin, View):
         order.user.money += Decimal(money)
         order.user.save()
         # 订单状态置为交易成功
-        order.pay_status = 'TRADE_SUCCESS'
+        if self.callback_data.get('trade_status', None):
+            order.pay_status = self.callback_data['trade_status']
+        else:
+            order.pay_status = Status.TRADE_SUCCESS.value
         order.save()
 
 
@@ -144,7 +158,7 @@ class PaySuccessView(LoginRequiredMixin, AuthorRequiredMixin, View):
 
         order = OrderInfo.objects.get(order_sn=order_sn)
         if order:
-            if order.pay_status == 'TRADE_SUCCESS':
+            if order.pay_status == Status.TRADE_SUCCESS.value:
                 #支付成功
                 return JsonResponse({
                     'status': 'ok'

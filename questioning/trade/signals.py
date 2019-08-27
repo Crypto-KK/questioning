@@ -8,7 +8,7 @@ from questioning.trade import Status
 @receiver(post_save, sender=OrderInfo)
 def finish_deposit(sender, instance=None, created=False, **kwargs):
     """完成充值后，写入到流水中"""
-    if created:
+    if not created:
         if instance.pay_status == Status.TRADE_SUCCESS.value:
             # 充值成功
             AccountDetail.objects.create(
