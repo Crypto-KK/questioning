@@ -15,23 +15,7 @@
     <h3>选择充值金额</h3><br>
 
     <div class="row">
-        <div class="col-md-3">
-            <div class="card" style="width: 15rem;">
-          <div class="card-body">
-            <h5 class="card-title">充多得多</h5>
 
-            <p>5元=50金币
-{#                <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">#}
-            </p>
-            <p>10元=120金币</p>
-            <p>50元=600金币</p>
-            <p>100元=1500金币</p>
-            <p>500元=8000金币</p>
-            <p>1000元=20000金币</p>
-
-          </div>
-        </div>
-        </div>
 
         <div class="col-md-8">
             <div class="card-group">
@@ -81,9 +65,30 @@
 
         <br>
         <div class="money-other">
-            请输入充值的金额：<input type="text" id="money-input">&nbsp; 元
+            请输入充值的金额：<input type="text" id="money-input">&nbsp; 元&nbsp;
+            <button class="btn btn-primary" id="other-confirm">确认</button>
+            <br><p style="color: red" id="other-info"></p>
         </div>
 
+
+        </div>
+
+        <div class="col-md-4">
+            <div class="card" style="width: 15rem;">
+          <div class="card-body">
+            <h5 class="card-title">充多得多</h5>
+
+            <p>5元=50金币
+{#                <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">#}
+            </p>
+            <p>10元=120金币</p>
+            <p>50元=600金币</p>
+            <p>100元=1500金币</p>
+            <p>500元=8000金币</p>
+            <p>1000元=20000金币</p>
+
+          </div>
+        </div>
         </div>
 
     </div>

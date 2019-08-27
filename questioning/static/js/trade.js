@@ -86,6 +86,27 @@ $(function () {
         updateAllMoney();
     }
 
+    $('#other-confirm').click(function () {
+        // 充值其他金额，点击确认的时候
+        val = Number($('#money-input').val());
+
+        if (typeof val === 'number' && !isNaN(val)) {
+            if (val <= 0) {
+                alert('请输入大于0的整数！');
+                return
+            }
+
+            money = val;
+            $('#other-info').text(
+                '充值' + val + '元 您将获得' + val * 10 + '金币'
+            ).css('color', 'blue');
+            updateAllMoney()
+        } else {
+            $('#other-info').text('请输入正整数！').css('color', 'red')
+        }
+
+    });
+
     $('#pay').click(function () {
         if (money === 0.00) {
             alert('请选择充值金额！');

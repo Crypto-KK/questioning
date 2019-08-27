@@ -13,9 +13,8 @@
 {% get_providers as socialaccount_providers %}
 
 {% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+<p>{% blocktrans with site.name as site_name %}请使用第三方账号登录 或 <a href="{{ signup_url }}">注册</a>
+一个问乎的账号在下面登录{% endblocktrans %}</p>
 
 <div class="socialaccount_ballot">
 
@@ -23,15 +22,15 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
     {% include "socialaccount/snippets/provider_list.html" with process="login" %}
   </ul>
 
-  <div class="login-or">{% trans 'or' %}</div>
+{#  <div class="login-or">{% trans 'or' %}</div>#}
 
 </div>
 
 {% include "socialaccount/snippets/login_extra.html" %}
 
 {% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+<p>{% blocktrans %}如果你还没有一个账号，请先
+<a href="{{ signup_url }}">登录</a>{% endblocktrans %}</p>
 {% endif %}
 
 <form class="login" method="POST" action="{% url 'account_login' %}">
