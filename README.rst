@@ -14,40 +14,39 @@ Django开发的问答网站
 :License: MIT
 
 
-Settings
+设置
 --------
 
-Moved to settings_.
+跳转到 设置_.
 
 .. _settings: http://cookiecutter-django.readthedocs.io/en/latest/settings.html
 
-Basic Commands
+基本命令
 --------------
 
-Setting Up Your Users
+创建用户
 ^^^^^^^^^^^^^^^^^^^^^
 
-* To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+* 创建一个 **普通用户**只需要去登录界面，使用邮箱注册一个用户。
 
-* To create an **superuser account**, use this command::
+* 创建一个 **超级用户**, 使用以下命令::
 
     $ python manage.py createsuperuser
 
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
 
-Type checks
+类型检查
 ^^^^^^^^^^^
 
-Running type checks with mypy:
+使用mypy运行类型检查:
 
 ::
 
   $ mypy questioning
 
-Test coverage
+测试覆盖度
 ^^^^^^^^^^^^^
 
-To run the tests, check your test coverage, and generate an HTML coverage report::
+运行测试程序、查看你的测试覆盖度报告，生成HTML测试覆盖度报告页面::
 
     $ coverage run -m pytest
     $ coverage html
@@ -72,9 +71,9 @@ Moved to `Live reloading and SASS compilation`_.
 Celery
 ^^^^^^
 
-This app comes with Celery.
+本项目需要使用Celery.
 
-To run a celery worker:
+运行一个Celery worker:
 
 .. code-block:: bash
 
