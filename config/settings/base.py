@@ -78,7 +78,6 @@ THIRD_PARTY_APPS = [
     'taggit',
     'mdeditor',
     'django_comments',
-    'rest_framework',
 
     'corsheaders'
 ]

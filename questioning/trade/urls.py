@@ -10,5 +10,6 @@ urlpatterns = [
     path('alipay/return/', views.AlipayView.as_view(), name='alipay'),
     path('pay/verify/', views.PaySuccessView.as_view(), name='verify'),
 
-    path('orderinfo/', views.OrderInfoView.as_view(), name='orderinfo')
+    path('orderinfo/', views.OrderInfoView.as_view(), name='orderinfo'),
+    path('account-detail/', views.AccountDetailView.as_view(), name='account_detail'),
 ]

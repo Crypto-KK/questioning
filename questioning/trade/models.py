@@ -22,7 +22,8 @@ class OrderInfo(CreatedUpdatedMixin, models.Model):
     pay_status = models.CharField(choices=ORDER_STATUS, max_length=40, verbose_name='订单状态', default='paying')
     order_mount = models.DecimalField(verbose_name="充值金额", max_digits=10,
                                 decimal_places=2, default=0.00)
-
+    pay_url = models.TextField(default='', null=True, blank=True,
+                               verbose_name='支付宝支付地址')
 
     class Meta:
         verbose_name = "充值订单"
@@ -45,7 +46,9 @@ class AccountDetail(CreatedUpdatedMixin, models.Model):
                                editable=False, verbose_name='uid')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='用户')
     mount = models.DecimalField(default=0.00, max_digits=10, decimal_places=2,
-                                verbose_name='金额变化')
+                                verbose_name='金额变化(rmb)')
+    money_mount = models.DecimalField(default=0.00, max_digits=10, decimal_places=2,
+                                verbose_name='金额变化(金币)')
     current_money = models.DecimalField(default=0.00, max_digits=10, decimal_places=2,
                                 verbose_name='当前金币')
     description = models.CharField(max_length=255, verbose_name='说明')
@@ -54,3 +57,10 @@ class AccountDetail(CreatedUpdatedMixin, models.Model):
     class Meta:
         verbose_name = '账户明细'
         verbose_name_plural = verbose_name
+
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.money_mount = convert_rmb_to_money(self.mount.to_integral())
+        super().save(force_insert=False, force_update=False, using=None,
+             update_fields=None)

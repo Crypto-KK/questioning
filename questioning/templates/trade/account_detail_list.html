@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}账户明细 - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <!-- Page Content -->
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">首页</a></li>
+                <li class="breadcrumb-item active"><a href="{% url 'users:detail' request.user %}">个人中心</a></li>
+                <li class="breadcrumb-item active" aria-current="page">充值记录</li>
+            </ol>
+        </nav>
+        <h2>共查询到{{ count }}条账户明细</h2><br>
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-12">
+
+
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">时间</th>
+                          <th scope="col">金币变动</th>
+                          <th scope="col">当前金币</th>
+                          <th scope="col">说明</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+
+
+                {% for obj in account_details %}
+                    <tr>
+                        <th scope="row">{{obj.created_at}}</th>
+                        <td>
+                            {% if obj.mount >= 0 %}
+                                +
+                            {% else %}
+                                -
+                            {% endif %}
+                            {{ obj.money_mount }}
+                        </td>
+                        <td>
+                            {{obj.current_money}}
+                        </td>
+                        <td>{{obj.description}}</td>
+
+
+                    </tr>
+                {% empty %}
+                    <h4 class="no-data">还没有充值记录</h4>
+                {% endfor %}
+                      </tbody>
+                    </table>
+
+                <br>
+
+                {% include 'pagination.html' %}
+
+            </div>
+
+        </div>
+        <!-- /.row -->
+    </div>
+
+
+{% endblock content %}
+

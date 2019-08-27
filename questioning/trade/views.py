@@ -1,5 +1,4 @@
 import time
-from datetime import datetime
 from decimal import Decimal
 from random import Random
 
@@ -12,12 +11,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
 from django.views.generic.base import View, TemplateView
-from rest_framework.response import Response
 
 from questioning.utils.helpers import AuthorRequiredMixin, convert_rmb_to_money
 from questioning.utils.alipay import AliPay
 from questioning.utils.helpers import get_alipay_url
-from questioning.trade.models import OrderInfo
+from questioning.trade.models import OrderInfo, AccountDetail
 from trade import Status
 
 
@@ -33,12 +31,13 @@ class ConfirmPayView(LoginRequiredMixin, AuthorRequiredMixin, View):
         if not order_mount:
             return redirect(reverse('users:detail'))
 
+        url = get_alipay_url(order_sn, order_mount)
         OrderInfo.objects.create(
             user=request.user,
             order_sn=order_sn,
             order_mount=order_mount,
+            pay_url=url
         )
-        url = get_alipay_url(order_sn, order_mount)
 
         return JsonResponse({
             'pay_url': url,
@@ -181,4 +180,17 @@ class OrderInfoView(LoginRequiredMixin, AuthorRequiredMixin, ListView):
         context = super(OrderInfoView, self).get_context_data(object_list=None, **kwargs)
         context['count'] = self.get_queryset().count()
 
+        return context
+
+
+class AccountDetailView(LoginRequiredMixin, AuthorRequiredMixin, ListView):
+    template_name = 'trade/account_detail_list.html'
+    context_object_name = 'account_details'
+    paginate_by = 20
+    def get_queryset(self):
+        return AccountDetail.objects.filter(user=self.request.user).order_by('-created_at')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['count'] = self.get_queryset().count()
         return context
