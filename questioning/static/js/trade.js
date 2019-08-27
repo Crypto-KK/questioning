@@ -42,6 +42,8 @@ $(function () {
     let money_10 = $('#money_10');
     let money_50 = $('#money_50');
     let money_100 = $('#money_100');
+    let money_500 = $('#money_500');
+    let money_1000 = $('#money_1000');
     let money_other = $('#money_other');
 
     money_5.click(function () {
@@ -58,6 +60,14 @@ $(function () {
 
     money_100.click(function () {
         onMoneyClick($(this), 100.00)
+    });
+
+    money_500.click(function () {
+        onMoneyClick($(this), 500.00)
+    });
+
+    money_1000.click(function () {
+        onMoneyClick($(this), 1000.00)
     });
 
     money_other.click(function () {
@@ -115,7 +125,7 @@ $(function () {
                     alert('充值成功！');
                     window.location.href = '/users/' + currentUser
                 } else {
-                    alert('充值失败，请重新充值！')
+                    alert('充值失败，网络可能存在延时原因，请稍候重试！')
                 }
             }
         })
@@ -126,9 +136,8 @@ $(function () {
     });
 
 
-
     function updateAllMoney() {
-        all_money_label.text('金额 ' + money + '.00元')
+        all_money_label.text('需支付 ' + money + '.00元')
     }
 
     function removeSelect() {
@@ -136,6 +145,8 @@ $(function () {
         money_10.removeClass('money-select');
         money_50.removeClass('money-select');
         money_100.removeClass('money-select');
+        money_500.removeClass('money-select');
+        money_1000.removeClass('money-select');
         money_other.removeClass('money-select');
     }
 });

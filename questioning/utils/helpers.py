@@ -63,7 +63,9 @@ def convert_rmb_to_money(rmb:float) -> float:
         5: 50.00,
         10: 120.00,
         50: 600.00,
-        100: 1500.00
+        100: 1500.00,
+        500: 8000.00,
+        1000: 20000.00
     }
     money = 0.00
     if rmb not in d:

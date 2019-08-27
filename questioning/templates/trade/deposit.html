@@ -12,49 +12,82 @@
             <li class="breadcrumb-item active" aria-current="page">充值</li>
         </ol>
     </nav>
-    <h3>充值金额</h3><br>
+    <h3>选择充值金额</h3><br>
 
-    <div class="card-group">
-      <div class="card mb-1 money" style="max-width: 12rem;">
-        <div class="card-body" id="money_5">
-          <h5 class="card-title">5元/50
-              <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">
-          </h5>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card" style="width: 15rem;">
+          <div class="card-body">
+            <h5 class="card-title">充多得多</h5>
+
+            <p>5元=50金币
+{#                <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">#}
+            </p>
+            <p>10元=120金币</p>
+            <p>50元=600金币</p>
+            <p>100元=1500金币</p>
+            <p>500元=8000金币</p>
+            <p>1000元=20000金币</p>
+
+          </div>
         </div>
-      </div>
-      <div class="card mb-1 money" style="max-width: 12rem;">
-        <div class="card-body" id="money_10">
-          <h5 class="card-title">10元/120
-                            <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">
-          </h5>
         </div>
-      </div>
-      <div class="card mb-1 money" style="max-width: 12rem;">
-        <div class="card-body" id="money_50">
-          <h5 class="card-title">50元/600
-                            <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">
-          </h5>
+
+        <div class="col-md-8">
+            <div class="card-group">
+              <div class="card mb-1 money" style="max-width: 5rem;">
+                <div class="card-body" id="money_5">
+                  <h5 class="card-title">5元
+                  </h5>
+                </div>
+              </div>
+              <div class="card mb-1 money" style="max-width: 6rem;">
+                <div class="card-body" id="money_10">
+                  <h5 class="card-title">10元
+                  </h5>
+                </div>
+              </div>
+              <div class="card mb-1 money" style="max-width: 6rem;">
+                <div class="card-body" id="money_50">
+                  <h5 class="card-title">50元
+                  </h5>
+                </div>
+              </div>
+                <div class="card mb-1 money" style="max-width: 7rem;">
+                <div class="card-body" id="money_100">
+                  <h5 class="card-title">100元
+                  </h5>
+                </div>
+              </div>
+                <div class="card mb-1 money" style="max-width: 7rem;">
+                <div class="card-body" id="money_500">
+                  <h5 class="card-title">500元
+                  </h5>
+                </div>
+              </div>
+                <div class="card mb-1 money" style="max-width: 7rem;">
+                <div class="card-body" id="money_1000">
+                  <h5 class="card-title">1000元
+                  </h5>
+                </div>
+              </div>
+                  <div class="card mb-1 money" style="max-width: 8rem;">
+                <div class="card-body" id="money_other">
+                  <h5 class="card-title">其他
+                  </h5>
+                </div>
+              </div>
         </div>
-      </div>
-        <div class="card mb-1 money" style="max-width: 12rem;">
-        <div class="card-body" id="money_100">
-          <h5 class="card-title">100元/1500
-                            <img src="{% static 'img/money.png' %}" alt="" style="width: 32px; height: 32px;">
-          </h5>
+
+        <br>
+        <div class="money-other">
+            请输入充值的金额：<input type="text" id="money-input">&nbsp; 元
         </div>
-      </div>
-          <div class="card mb-1 money" style="max-width: 12rem;">
-        <div class="card-body" id="money_other">
-          <h5 class="card-title">其他金额
-          </h5>
+
         </div>
-      </div>
+
     </div>
 
-    <br>
-    <div class="money-other">
-        请输入充值的金额：<input type="text" id="money-input">&nbsp; 元
-    </div>
 
 
 
@@ -74,8 +107,8 @@
 
     </div>
     <div class="float-right">
-        <p id="all_money" style="color: red; font-size: 18px;">金额 0.00元</p>
-        <button type="button" class="btn btn-primary btn-lg" id="pay" data-toggle="modal" data-target="#confirmPay">确认支付
+        <p id="all_money" style="color: red; font-size: 18px;">需支付 0.00元</p>
+        <button type="button" style="width: 150px;" class="btn btn-primary btn-lg" id="pay" data-toggle="modal" data-target="#confirmPay">确认支付
         </button>
 
     </div>
