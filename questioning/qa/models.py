@@ -131,15 +131,15 @@ class Question(CreatedUpdatedMixin, models.Model):
 class Answer(CreatedUpdatedMixin, models.Model):
     uuid_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
-                             related_name='a_author')
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    content = MDTextField()
+                             related_name='a_author', verbose_name='用户')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='问题')
+    content = MDTextField(verbose_name='回答内容')
     is_answer = models.BooleanField(default=False, verbose_name='是否为采纳的答案')
 
     votes = GenericRelation(Vote, verbose_name='投票')
 
     class Meta:
-        verbose_name = '问答'
+        verbose_name = '回答'
         verbose_name_plural = verbose_name
         ordering = ('-is_answer', '-created_at')
 

@@ -5,6 +5,7 @@ import markdown
 from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.html import format_html
 
 from mdeditor.fields import MDTextField
 from markdownx.utils import markdownify
@@ -65,6 +66,12 @@ class Article(CreatedUpdatedMixin, models.Model):
 
     def __str__(self):
         return self.title
+
+    def image_data(self):
+        return format_html(
+            f'<img src={self.image.url} style="width:120px;height=50px;"'
+        )
+    image_data.short_description = '封面图片'
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):

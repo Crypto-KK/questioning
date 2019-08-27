@@ -4,6 +4,8 @@ from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
 
+import xadmin
+
 urlpatterns = [
 
     path("users/", include("questioning.users.urls", namespace="users")),
@@ -16,6 +18,10 @@ urlpatterns = [
     path('qa/', include('questioning.qa.urls', namespace='qa')),
     path('articles/', include('questioning.articles.urls', namespace='articles')),
     path('trade/', include('questioning.trade.urls', namespace='trade')),
+
+
+    path('xadmin/', xadmin.site.urls),
+    path('ueditor/', include('DjangoUeditor.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

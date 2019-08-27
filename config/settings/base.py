@@ -65,6 +65,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize", # Handy template tags
+    "django.contrib.admin"
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -85,6 +86,8 @@ LOCAL_APPS = [
     "questioning.qa.apps.QaConfig",
     "questioning.articles.apps.ArticlesConfig",
     "questioning.trade.apps.TradeConfig",
+
+    'xadmin'
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
