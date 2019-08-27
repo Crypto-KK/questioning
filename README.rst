@@ -1,7 +1,7 @@
 questioning
 ===========
 
-a q&a website
+Django开发的问答网站
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/
