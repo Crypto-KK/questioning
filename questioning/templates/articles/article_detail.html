@@ -26,6 +26,8 @@
                 <p class="text-left">
                     <a href="{% url 'users:detail' article.user.username %}">{{ article.user.get_profile_name }}</a>
                     发表于{{ article.created_at }}
+
+
                 </p>
                 <hr>
                 <!-- 文章图片 -->
@@ -37,6 +39,8 @@
                 <hr>
                 <!-- Post Content -->
                 <p class="card-text">{{ article.get_detail_markdown|safe }}</p>
+
+                {% include 'share.html' %}
                 <hr>
                 <h2>评论</h2>
                 <br>
