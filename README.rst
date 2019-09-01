@@ -32,6 +32,8 @@ Django开发的问答网站
 * 创建一个 **超级用户**, 使用以下命令::
 
     $ python manage.py createsuperuser
+    
+* 使用 **超级用户** 登录xadmin
 
 
 类型检查
