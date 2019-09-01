@@ -68,6 +68,7 @@ DJANGO_APPS = [
     "django.contrib.admin"
 ]
 THIRD_PARTY_APPS = [
+    "channels",
     "crispy_forms",
     "allauth",
     "allauth.account",
@@ -88,6 +89,7 @@ LOCAL_APPS = [
     "questioning.articles.apps.ArticlesConfig",
     "questioning.trade.apps.TradeConfig",
     "questioning.course.apps.CourseConfig",
+    "questioning.message.apps.MessageConfig",
     'xadmin'
     # Your stuff: custom apps go here
 ]
@@ -306,3 +308,16 @@ SOCIALACCOUNT_ADAPTER = "questioning.users.adapters.SocialAccountAdapter"
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+ASGI_APPLICATION = "config.routing.application"
+#频道层缓存
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [f'{env("REDIS_URL", default="redis://127.0.0.1:6379")}/3'],
+        },
+    },
+}
+from channels.layers import get_channel_layer
+
