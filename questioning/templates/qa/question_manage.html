@@ -7,7 +7,7 @@
     <!-- Page Content -->
     <div class="container">
 
-        <h2>共发表{{ count }}篇文章</h2><br>
+        <h2>共提出{{ count }}个问题</h2><br>
         <div class="row">
             <!-- Blog Entries Column -->
             <div class="col-md-12">
@@ -17,9 +17,8 @@
                       <thead>
                         <tr>
                           <th scope="col">标题</th>
-                          <th scope="col">阅读量</th>
-                          <th scope="col">评论数</th>
                           <th scope="col">状态</th>
+                          <th scope="col">是否有回答</th>
                           <th scope="col">发表时间</th>
                           <th scope="col">操作</th>
                         </tr>
@@ -27,24 +26,19 @@
                       <tbody>
 
 
-                {% for article in articles %}
-                    {% get_comment_count for article as comment_count %}
+                {% for question in questions %}
                     <tr>
-                        <th scope="row"><a href="{% url 'articles:article' article.pk %}">{{ article.title|truncatechars:15 }}</a></th>
-                        <td>{{ article.view_num }}</td>
-                        <td>{{ comment_count }}</td>
-                        <td>{{ article.get_status_display }}</td>
-                        <td>{{ article.created_at }}</td>
+                        <th scope="row"><a href="{% url 'qa:question_detail' question.pk %}">{{ question.title|truncatechars:25 }}</a></th>
+                        <td>{{ question.get_status_display }}</td>
+                        <td>{{ question.has_answer }}</td>
+                        <td>{{ question.created_at }}</td>
                         <td>
-                            <a class="btn btn-warning" data-ordersn="{{ article.pk }}" href="{% url 'articles:edit_article' article.pk %}">编辑</a>
-                            <a class="btn btn-danger" data-ordersn="{{ article.pk }}" href="{% url 'articles:delete_article' article.pk %}">删除</a>
+                            <a class="btn btn-warning" data-ordersn="{{ article.pk }}" href="{% url 'qa:update_question' question.pk %}">编辑</a>
+                            <a class="btn btn-danger" data-ordersn="{{ article.pk }}" href="{% url 'qa:delete_question' question.pk %}">删除</a>
                         </td>
-
-
-
                     </tr>
                 {% empty %}
-                    <h4 class="no-data">还没有发表文章</h4>
+                    <h4 class="no-data">还没有提过问题</h4>
                 {% endfor %}
                       </tbody>
                     </table>
@@ -61,3 +55,4 @@
 
 
 {% endblock content %}
+

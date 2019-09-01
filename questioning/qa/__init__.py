@@ -1,7 +1,7 @@
 
 QUESTION_STATUS = (
-    ('O', 'OPEN'),
-    ('C', 'Close'),
+    ('O', '开放'),
+    ('C', '关闭'),
     ('D', 'Draft')
 )
 
