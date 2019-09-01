@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-
+from django.template.loader import render_to_string
 from channels.layers import get_channel_layer
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
+from asgiref.sync import async_to_sync, sync_to_async
+from channels.db import database_sync_to_async
 
 from questioning.message.models import Message
 from questioning.utils.helpers import ajax_required
@@ -68,6 +70,13 @@ def send_message(request):
             recipient=recipient,
             message=message
         )
+        channel_layer = get_channel_layer()
+        payload = {
+            'type': 'receive',
+            'message': render_to_string('message/single_message.html', {'message': msg}),
+            'sender': sender.username
+        }
+        async_to_sync(channel_layer.group_send)(recipient_username, payload)
         return render(request, 'message/single_message.html', {
             'message': msg
         })

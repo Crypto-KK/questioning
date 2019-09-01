@@ -42,7 +42,7 @@ $(function () {
     //监听后端发送的消息
 
     ws.onmessage = function (event) {
-        console.log(event)
+
         const data = JSON.parse(event.data);
         if (data.sender === activeUser) { //当前选中的用户
             $('.send-message').before(data.message);
@@ -52,3 +52,40 @@ $(function () {
 
 
 });
+
+
+// websocket构造函数，新建websocket
+// let ws = new WebSocket('ws://ip:80', 'websocket')
+//
+// ws.readyState
+// CONNECTING
+// OPEN
+// CLOSING
+// CLOSED
+//
+// switch (ws.readyState) {
+//     case ws.CONNECTING:
+//         break;
+//     case ws.OPEN:
+//         break;
+//
+// }
+//
+// ws.onopen = function () {
+//     ws.send('su')
+// }
+//
+//
+// ws.onclose = function () {
+//
+// }
+//
+// ws.onmessage = function (event) {
+//     if (typeof event.data === String) {
+//
+//     }
+// }
+//
+// ws.send()
+//
+// ws.onerror

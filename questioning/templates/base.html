@@ -46,11 +46,10 @@
             </ul>&nbsp;&nbsp;
 
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'articles:list' %}">&nbsp;&nbsp;首页</a></li>&nbsp;&nbsp;
+                <li class="nav-item"><a class="nav-link" href="{% url 'articles:list' %}">首页</a></li>&nbsp;&nbsp;
                 <li class="nav-item"><a class="nav-link" href="{% url 'qa:unanswered_q' %}">问答</a></li>&nbsp;&nbsp;
                 <li class="nav-item"><a class="nav-link" href="{% url 'qa:unanswered_q' %}">Python高级教程</a></li>&nbsp;&nbsp;
-                <li class="nav-item"><a class="nav-link" href="{% url 'qa:unanswered_q' %}">Django高级教程</a></li>&nbsp;&nbsp;
-                <li class="nav-item"><a class="nav-link" href="#">私信</a></li>&nbsp;&nbsp;
+                <li class="nav-item"><a class="nav-link" href="{% url 'qa:unanswered_q' %}">Django高级教程</a></li>&nbsp;&nbsp;&nbsp;
             </ul>
 
             <form role="search" action="#">
@@ -78,6 +77,8 @@
                                 个人中心</a>
                             <a class="dropdown-item" href="{% url 'trade:deposit' %}">
                                 充值金币</a>
+                            <a class="dropdown-item" href="{% url 'messager:messages_list' %}">
+                                我的私信</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url 'qa:ask_question' %}">
                                 提问</a>
@@ -126,7 +127,8 @@
     <!-- Your stuff: Third-party javascript libraries go here -->
     <script src="{% static 'js/jquery-ui.min.js' %}" type="text/javascript"></script>
     <!-- place project specific Javascript in this file -->
-
+    <script src="{% static 'js/websocketbridge.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/reconnecting-websocket.js' %}" type="text/javascript"></script>
 
     <script type="text/javascript">
         const currentUser = "{{ request.user.username }}";
