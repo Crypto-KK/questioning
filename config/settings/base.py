@@ -91,6 +91,7 @@ LOCAL_APPS = [
     "questioning.course.apps.CourseConfig",
     "questioning.message.apps.MessageConfig",
     "questioning.home.apps.HomeConfig",
+    "questioning.notifications.apps.NotificationsConfig",
     'xadmin'
     # Your stuff: custom apps go here
 ]
