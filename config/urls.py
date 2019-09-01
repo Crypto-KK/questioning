@@ -11,7 +11,7 @@ urlpatterns = [
     path("users/", include("questioning.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-
+    path('', include('questioning.home.urls')),
     path('mdeditor/', include('mdeditor.urls')),
     path('comments/', include('django_comments.urls')),
 

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static thumbnail process_string %}
+
+{% block title %}文章 - {{ block.super }}{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/qa.css' %}">
+{% endblock %}
+{% block content %}
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-8">
+                {% for item in items %}
+                    {% if item.content_type.name == '问题' %}
+                        {% include 'qa/question_sample.html' with question=item.content_object %}
+
+                    {% endif %}
+
+                    {% if item.content_type.name == '文章' %}
+                            <!-- Blog Post -->
+                            <div class="card mb-4">
+                                {% thumbnail item.content_object.image "1920x1080" as im %}
+                                    <img src="{{ im.url }}" alt="文章图片" class="card-img-top">
+                                    {% empty %}
+                                        <img class="card-img-top" src="http://placehold.it/1920x1080" alt="图片大小">
+                                {% endthumbnail %}
+                                <div class="card-body">
+                                    <h3 class="card-title">
+                                        <a href="{% url 'articles:article' item.content_object.pk %}">{{ item.content_object.title|title }}</a>
+                                    </h3>
+                                    <p class="">{{ item.content_object.get_markdown|safe|removeHTML100 }}</p>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <a href="{% url 'users:detail' item.content_object.user.username %}">{{ item.content_object.user.get_profile_name }}</a>
+                                    发表于{{ item.content_object.created_at }}
+
+                                    {% for tag in item.content_object.tags.names %}
+                                        <a href="#"><span class="badge badge-info">{{ tag }}</span></a>
+                                    {% endfor %}
+                                    <a style="float:right" href="{% url 'articles:article' pk=item.content_object.pk %}" class="btn-sm btn-primary">阅读全文→</a>
+                                </div>
+                            </div>
+                    {% endif %}
+                {% empty %}
+                    <h4 class="no-data">还没有任何动态</h4>
+                {% endfor %}
+
+                {% include 'pagination.html' %}
+
+            </div>
+
+            <!-- Sidebar Widgets Column -->
+            <div class="col-md-4">
+
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+
+{% endblock content %}

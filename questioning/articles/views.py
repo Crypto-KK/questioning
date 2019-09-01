@@ -12,7 +12,7 @@ from questioning.utils.helpers import AuthorRequiredMixin
 from questioning.articles.models import Article
 
 
-class ArticlesListView(LoginRequiredMixin, ListView):
+class ArticlesListView(ListView):
     '''文章列表'''
     model = Article
     paginate_by = 10
@@ -52,7 +52,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('articles:list')
 
 
-class ArticleDetailView(LoginRequiredMixin, DetailView):
+class ArticleDetailView(DetailView):
     '''详情'''
     model = Article
     template_name = 'articles/article_detail.html'

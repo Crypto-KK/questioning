@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import (
-    GenericRelation,
     GenericForeignKey
 )
 from django.utils.encoding import python_2_unicode_compatible
@@ -21,8 +20,6 @@ class Item(CreatedUpdatedMixin, models.Model):
     object_id = models.CharField(max_length=255)
     content_object = GenericForeignKey()
 
-    def __str__(self):
-        return self.pk
 
     class Meta:
         verbose_name = '首页推荐'
