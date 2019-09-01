@@ -90,6 +90,7 @@ LOCAL_APPS = [
     "questioning.trade.apps.TradeConfig",
     "questioning.course.apps.CourseConfig",
     "questioning.message.apps.MessageConfig",
+    "questioning.home.apps.HomeConfig",
     'xadmin'
     # Your stuff: custom apps go here
 ]

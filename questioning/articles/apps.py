@@ -6,4 +6,4 @@ class ArticlesConfig(AppConfig):
     verbose_name = '文章'
 
     def ready(self):
-        from questioning.trade import signals
+        from questioning.articles import signals

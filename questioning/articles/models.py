@@ -3,6 +3,7 @@ from collections import defaultdict
 
 import markdown
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.html import format_html
@@ -12,6 +13,7 @@ from markdownx.utils import markdownify
 from taggit.managers import TaggableManager
 from slugify import slugify
 
+from questioning.home.models import Item
 from questioning.utils.models import CreatedUpdatedMixin
 from questioning.articles import STATUS
 
@@ -56,7 +58,7 @@ class Article(CreatedUpdatedMixin, models.Model):
     edited = models.BooleanField(default=False, verbose_name='是否可编辑')
     view_num = models.IntegerField(default=0, verbose_name='阅读数')
     tags = TaggableManager(help_text='多个标签，使用,隔开')
-
+    home_items = GenericRelation(Item, verbose_name='首页推荐')
     objects = ArticleQuerySet.as_manager()
 
     class Meta:

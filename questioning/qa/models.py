@@ -13,6 +13,7 @@ from markdownx.utils import markdownify
 from slugify import slugify
 from taggit.managers import TaggableManager
 
+from questioning.home.models import Item
 from questioning.utils.models import CreatedUpdatedMixin
 from qa import QUESTION_STATUS, QUESTION_TYPE
 
@@ -74,7 +75,9 @@ class Question(CreatedUpdatedMixin, models.Model):
     tags = TaggableManager(help_text='请用,隔开')
     has_answer = models.BooleanField(default=False, verbose_name='是否有正确回答')
     votes = GenericRelation(Vote, verbose_name='投票情况')
+    home_items = GenericRelation(Item, verbose_name='首页推荐')
     objects = QuestionQuerySet.as_manager()
+
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
