@@ -66,6 +66,7 @@ class ArticleDetailView(DetailView):
 class ArticleEditView(LoginRequiredMixin, AuthorRequiredMixin, UpdateView):
     '''用户编辑文章'''
     model = Article
+    context_object_name = 'article'
     message = '文章编辑成功'
     template_name = 'articles/article_update.html'
     form_class = ArticleForm
@@ -76,7 +77,9 @@ class ArticleEditView(LoginRequiredMixin, AuthorRequiredMixin, UpdateView):
 
     def get_success_url(self):
         messages.success(self.request, self.message)
-        return reverse('articles:article', kwargs={'pk': self.kwargs['pk']})
+        return reverse('articles:article', kwargs={
+            'pk': self.kwargs['pk']
+        })
 
 
 class ArticleDeleteView(LoginRequiredMixin, AuthorRequiredMixin, DeleteView):

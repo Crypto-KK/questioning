@@ -11,7 +11,7 @@
             <li class="breadcrumb-item active" aria-current="page">更新文章</li>
         </ol>
     </nav>
-    <form action="{% url 'articles:edit_article' form.instance.pk %}" enctype="multipart/form-data" id="article-form" method="post" role="form">
+    <form action="{% url 'articles:edit_article' article.pk %}" enctype="multipart/form-data" id="article-form" method="post" role="form">
         {% csrf_token %}
         {{ form.media }}
         {{ form|crispy }}

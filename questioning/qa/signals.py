@@ -6,6 +6,6 @@ from questioning.qa.models import Question
 
 @receiver(post_save, sender=Question)
 def question_save(sender, instance=None, created=False, **kwargs):
-    instance.home_items.create(
+    instance.home_items.update_or_create(
         user=instance.user
     )
