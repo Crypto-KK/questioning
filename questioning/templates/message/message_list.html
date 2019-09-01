@@ -10,7 +10,8 @@
 {% block content %}
 
     <div class="page-header">
-        <h4>{{ request.user.get_profile_name }}的聊天记录</h4>
+{#        <h4>{{ request.user.get_profile_name }}的聊天记录</h4>#}
+        <h4>最近在线用户</h4>
     </div>
     <div class="row">
         <div class="col-md-3">
@@ -30,7 +31,7 @@
             <div class="messages-list">
                 {% if message_list %}
                     {% for message in message_list %}
-                        {% include 'messager/single_message.html' with message=message %}
+                        {% include 'message/single_message.html' with message=message %}
                     {% endfor %}
                 {% else %}
                     <p>没有聊天记录</p>
@@ -39,15 +40,17 @@
             </div>
             <hr>
             <div class="chat-box">
+
+            </div>
+
                 <form role="form" method="post" action="#" id="send">
                     <div class="form-group">
                         {% csrf_token %}
                         <input type="hidden" name="to" value="{{ active }}">
                         <input class="form-control" type="text" name="message" placeholder="发送消息" autocomplete="off">
-                        <button type="submit" class="btn btn-primary" value="发送">发送</button>
+    {#                        <button type="submit" class="btn btn-primary" value="发送">发送</button>#}
                     </div>
                 </form>
-            </div>
         </div>
 
     </div>

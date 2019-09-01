@@ -18,7 +18,7 @@ urlpatterns = [
     path('qa/', include('questioning.qa.urls', namespace='qa')),
     path('articles/', include('questioning.articles.urls', namespace='articles')),
     path('trade/', include('questioning.trade.urls', namespace='trade')),
-
+    path('messages/', include('questioning.message.urls', namespace='messages')),
 
     path('xadmin/', xadmin.site.urls),
     path('ueditor/', include('DjangoUeditor.urls')),
