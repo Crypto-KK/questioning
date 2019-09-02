@@ -93,7 +93,7 @@ class AlipayView(View):
             for key, value in request.POST.items():
                 self.callback_data[key] = value
 
-        print(self.callback_data)
+        #print(self.callback_data)
 
         sign = self.callback_data.pop('sign', None)
         self.order_sn = self.callback_data.get('out_trade_no', None) #订单号
