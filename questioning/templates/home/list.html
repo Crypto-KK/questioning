@@ -12,6 +12,19 @@
         <div class="row">
             <!-- Blog Entries Column -->
             <div class="col-md-8">
+                <ul class="nav nav-pills">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#">最新</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">热榜</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">关注</a>
+                  </li>
+
+                </ul>
+                <br>
                 {% for item in items %}
                     {% if item.content_type.name == '问题' %}
                         {% include 'qa/question_sample.html' with question=item.content_object %}
@@ -53,7 +66,16 @@
 
             <!-- Sidebar Widgets Column -->
             <div class="col-md-4">
-
+                {% if request.user.is_authenticated %}
+                    <div class="card my-4">
+                        <div class="card-body text-center">
+                            <a class="btn btn-success" href="{% url 'articles:write_new' %}" title="写文章">
+                                <i class="fa fa-pencil" aria-hidden="true"></i> 写文章</a>
+                            <a class="btn btn-primary" href="{% url 'qa:ask_question' %}" title="提问">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 提问</a>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
         <!-- /.row -->

@@ -9,89 +9,121 @@
 
 {% block content %}
     <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                个人中心
+              </div>
+              <div class="card-body">
+                <div class="row">
 
-        <div class="col-md-2">
-            {% thumbnail object.picture "x180" as im %}
-                <img src="{{ im.url }}" alt="用户头像">
-            {% empty %}
-                <img src="{% static 'img/user.png' %}" height="180px" alt="没有头像"/>
-            {% endthumbnail %}
-        </div>
+                    <div class="col-md-3">
+                        <div class="card-img-top">
+                    {% thumbnail object.picture "x180" as im %}
+                    <img src="{{ im.url }}" alt="用户头像">
+                    {% empty %}
+                        <img src="{% static 'img/user.png' %}" height="180px" alt="没有头像"/>
+                    {% endthumbnail %}
+                </div>
+                    </div>
 
-        <div class="col-md-5">
-            <div class="card card-body"><p>{{ object.introduction }}</p></div>
-        </div>
-        <div class="col-md-5">
-            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            {{ object.get_profile_name }}
-            <br/>
-            <i class="fa fa-money" aria-hidden="true"></i>
-            {{object.money}}金币
-            <br/>
-            <i class="fa fa-envelope" aria-hidden="true"></i><a class="email" href="mailto:{{ object.email }}">   {{ object.email }}</a><br/>
-            {% if object.job_title %}
-                <i class="fa fa-briefcase" aria-hidden="true"></i>  {{ object.job_title }} <br/>
-            {% endif %}
-            {% if object.location %}
-                <i class="fa fa-map-marker" aria-hidden="true"></i>  {{ object.location }} <br/>
-            {% endif %}
-            <div class="mb-2"></div>
-            <!--自己的页面显示更新按钮-->
-            {% if request.user.username == object.username %}
-                <a class="btn btn-primary" href="{% url 'users:update' %}">更新信息</a>
-                <a class="btn btn-success" href="{% url 'trade:deposit' %}">充值金币</a>
-                <a class="btn btn-warning" href="{% url 'trade:orderinfo' %}">充值记录</a>
-                <a class="btn btn-dark" href="{% url 'trade:account_detail' %}">账户明细</a>
+                    <div class="col-md-5">
+                        <h1 class="card-title">{{ object.get_profile_name }}</h1>
+                        <div class="card-text"><p>个性签名：{{ object.introduction }}</p></div>
 
-            {% endif %}
+                        <div class="mb-5"></div>
+                            {% if request.user.username == object.username %}
+                            <a class="btn btn-primary" href="{% url 'users:update' %}">编辑资料</a>
+                            <a class="btn btn-success" href="{% url 'trade:deposit' %}">充值金币</a>
+                            <a class="btn btn-warning" href="{% url 'trade:orderinfo' %}">充值记录</a>
+                            <a class="btn btn-dark" href="{% url 'trade:account_detail' %}">账户明细</a>
+                            {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <i class="fa fa-money" aria-hidden="true"></i>
+                        {{object.money}}金币
+                        <br/>
+                        <i class="fa fa-envelope" aria-hidden="true"></i><a class="email" href="mailto:{{ object.email }}">   {{ object.email }}</a><br/>
+                        {% if object.job_title %}
+                            <i class="fa fa-briefcase" aria-hidden="true"></i>  {{ object.job_title }} <br/>
+                        {% endif %}
+                        {% if object.location %}
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>  &nbsp; {{ object.location }} <br/>
+                        {% endif %}
+                        <br>
+                        {% if object.personal_url %}
+                        <a href="{{ object.personal_url }}" style="font-size: 2em" title="个人网站"><i class="fa fa-link"></i> </a>
+                        {% endif %}
+                        {% if object.weibo %}
+                            <a href="{{ object.weibo }}" style="font-size: 2em" title="微博"><i class="fa fa-weibo"></i> </a>
+                        {% endif %}
+                        {% if object.zhihu %}
+                            <a href="{{ object.zhihu }}" style="font-size: 2em" title="知乎"><i class="fa fa-quora"></i> </a>
+                        {% endif %}
+                        {% if object.github %}
+                            <a href="{{ object.github }}" style="font-size: 2em" title="Github"><i class="fa fa-github"></i> </a>
+                        {% endif %}
+                        {% if object.linkedin %}
+                            <a href="{{ object.linkedin }}" style="font-size: 2em" title="LinkedIn"><i class="fa fa-linkedin"></i> </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+              </div>
+            </div>
         </div>
     </div>
 
-    <div class="clear mb-3"></div>
-    {% if object.personal_url %}
-        <a href="{{ object.personal_url }}" style="font-size: 2em" title="个人网站"><i class="fa fa-link"></i> </a>
-    {% endif %}
-    {% if object.weibo %}
-        <a href="{{ object.weibo }}" style="font-size: 2em" title="微博"><i class="fa fa-weibo"></i> </a>
-    {% endif %}
-    {% if object.zhihu %}
-        <a href="{{ object.zhihu }}" style="font-size: 2em" title="知乎"><i class="fa fa-quora"></i> </a>
-    {% endif %}
-    {% if object.github %}
-        <a href="{{ object.github }}" style="font-size: 2em" title="Github"><i class="fa fa-github"></i> </a>
-    {% endif %}
-    {% if object.linkedin %}
-        <a href="{{ object.linkedin }}" style="font-size: 2em" title="LinkedIn"><i class="fa fa-linkedin"></i> </a>
-    {% endif %}
-
     {% if request.user.username == object.username %}
         <!-- Data tiles -->
-        <div class="row tile_count">
-            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">
-                <p class="fa fa-code"> 动态</p>
-                <div class="count">{{ moments_num }}</div>
-            </div>
-            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">
-                <p class="fa fa-key"> 文章</p>
-                <div class="count">{{ article_num }}</div>
-            </div>
-            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">
-                <p class="fa fa-comments"> 评论</p>
-                <div class="count">{{ comment_num }}</div>
-            </div>
-            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">
-                <p class="fa fa-question-circle"> 提问</p>
-                <div class="count">{{ question_num }}</div>
-            </div>
-            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">
-                <p class="fa fa-keyboard-o"> 回答</p>
-                <div class="count">{{ answer_num }}</div>
-            </div>
-            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">
-                <p class="fa fa-navicon"> 互动</p>
-                <div class="count">{{ interaction_num }}</div>
-            </div>
-        </div>
+{#        <div class="row tile_count">#}
+{#            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">#}
+{#                <p class="fa fa-code"> 动态</p>#}
+{#                <div class="count">{{ moments_num }}</div>#}
+{#            </div>#}
+{#            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">#}
+{#                <p class="fa fa-key"> 文章</p>#}
+{#                <div class="count">{{ article_num }}</div>#}
+{#            </div>#}
+{#            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">#}
+{#                <p class="fa fa-comments"> 评论</p>#}
+{#                <div class="count">{{ comment_num }}</div>#}
+{#            </div>#}
+{#            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">#}
+{#                <p class="fa fa-question-circle"> 提问</p>#}
+{#                <div class="count">{{ question_num }}</div>#}
+{#            </div>#}
+{#            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">#}
+{#                <p class="fa fa-keyboard-o"> 回答</p>#}
+{#                <div class="count">{{ answer_num }}</div>#}
+{#            </div>#}
+{#            <div class="col-md-2 col-sm-3 col-xs-4 tile_stats_count">#}
+{#                <p class="fa fa-navicon"> 互动</p>#}
+{#                <div class="count">{{ interaction_num }}</div>#}
+{#            </div>#}
+{#        </div>#}
         <!-- /data tiles -->
+
+        <br>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="charts-tab" data-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="true">点击量图表</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">我的文章</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">我的问题</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">我的回答</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="charts" role="tabpanel" aria-labelledby="charts-tab">...</div>
+          <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+        </div>
     {% endif %}
 {% endblock content %}
