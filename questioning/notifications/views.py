@@ -31,6 +31,21 @@ def get_latest_notifications(request):
         'notifications': notifications
     })
 
+
+@login_required
+def mark_as_read(request, pk):
+    """根据pk"""
+    notification = get_object_or_404(Notification, pk=pk)
+    notification.mark_as_read()
+    redirect_url = request.GET.get('next')
+    messages.add_message(request, messages.SUCCESS,
+                         f'通知{notification}标为已读')
+
+    if redirect_url:
+        return redirect(redirect_url)
+
+    return redirect(reverse_lazy('notifications:unread'))
+
 @login_required
 def mark_all_as_read(request):
     '''已读'''
@@ -42,4 +57,4 @@ def mark_all_as_read(request):
     if redirect_url:
         return redirect(redirect_url)
 
-    return redirect(reverse('notifications:unread'))
+    return redirect(reverse_lazy('notifications:unread'))

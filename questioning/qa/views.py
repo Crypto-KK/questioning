@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import markdown
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -186,6 +188,9 @@ def accept_answer(request):
     if answer.question.user.username != request.user.username:
         raise PermissionDenied()
     answer.accept_answer()
+    #采纳答案后回答者金币+10
+    #answer.user.money += Decimal(1)
+
 
     return JsonResponse({
         'status': 'true'
