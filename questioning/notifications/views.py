@@ -10,6 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template.loader import render_to_string
 from django.views.generic import ListView, DeleteView
 
+from asgiref.sync import AsyncToSync
 from questioning.utils.helpers import ajax_required, AuthorRequiredMixin
 
 from questioning.notifications.models import Notification
@@ -58,3 +59,38 @@ def mark_all_as_read(request):
         return redirect(redirect_url)
 
     return redirect(reverse_lazy('notifications:unread'))
+
+
+def notification_handler(actor, recipient, verb, action_object, **kwargs):
+    """
+    通知处理器
+    :param actor: request.user
+    :param recipient: User instance 一个或多个接受者
+    :param verb: 类别
+    :param action_object: 对象示例
+    :param kwargs: key, id_value
+    """
+
+    if recipient.username == action_object.user.username: #只通知接受者
+
+        key = kwargs.get('key', 'notification')
+        id_value = kwargs.get('id_value', None)
+
+        #记录通知内容
+        Notification.objects.create(
+            actor=actor,
+            recipient=recipient,
+            verb=verb,
+            action_object=action_object
+        )
+
+        channel_layer = get_channel_layer(key)
+        payload = {
+            'type': 'receive',
+            'key': key,
+            'actor_name': actor.username,
+            'id_value': id_value
+        }
+
+        async_to_sync(channel_layer.group_send)("notifications", payload)
+
