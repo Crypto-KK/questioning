@@ -88,3 +88,14 @@ class Notification(CreatedUpdatedMixin, models.Model):
         if self.action_object:
             return f'{self.actor} {self.get_verb_display()} {self.action_object}'
         return f'{self.actor} {self.get_verb_display()}'
+
+
+    def mark_as_read(self):
+        if self.unread:
+            self.unread = False
+            self.save()
+
+    def mark_as_unread(self):
+        if not self.unread:
+            self.unread = True
+            self.save()

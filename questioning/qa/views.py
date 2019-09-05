@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.http import require_POST
 
+from questioning.notifications.views import push_notification
 from questioning.qa.models import Question, Answer
 from questioning.utils.helpers import ajax_required, AuthorRequiredMixin
 from questioning.qa.forms import QuestionForm
@@ -148,6 +149,12 @@ def question_vote(request):
         question.votes.update_or_create(user=request.user,
                                         defaults={'value': value})
 
+    push_notification(
+        actor=request.user,
+        recipient=question.user,
+        verb='L',
+        action_object=question
+    )
     return JsonResponse({
         'votes': question.total_votes()
     })
@@ -172,6 +179,13 @@ def answer_vote(request):
         answer.votes.update_or_create(user=request.user,
                                       defaults={'value': value})
 
+    push_notification(
+        actor=request.user,
+        recipient=answer.user,
+        verb='L',
+        action_object=answer
+    )
+
     return JsonResponse({
         'votes': answer.total_votes()
     })
@@ -190,6 +204,12 @@ def accept_answer(request):
     answer.accept_answer()
     #采纳答案后回答者金币+10
     #answer.user.money += Decimal(1)
+    push_notification(
+        actor=request.user,
+        recipient=answer.user,
+        verb="W",
+        action_object=answer
+    )
 
 
     return JsonResponse({

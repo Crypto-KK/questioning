@@ -10,8 +10,11 @@
     <div class="container">
 
         <div class="row">
+
+
             <!-- Blog Entries Column -->
             <div class="col-md-8">
+
                 <ul class="nav nav-pills">
                   <li class="nav-item">
                     <a class="nav-link active" href="#">最新</a>
@@ -25,6 +28,11 @@
 
                 </ul>
                 <br>
+                                                <!-- 有新的更新时 -->
+                <div class="stream-update">
+                    <a href="{% url 'home:list' %}"><span class="new-posts"></span>有新的动态，点击查看</a>
+                </div>
+
                 {% for item in items %}
                     {% if item.content_type.name == '问题' %}
                         {% include 'qa/question_sample.html' with question=item.content_object %}

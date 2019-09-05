@@ -1,5 +1,7 @@
 from decimal import Decimal
 
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
@@ -13,6 +15,7 @@ def article_save(sender, instance=None, created=False, **kwargs):
     instance.home_items.update_or_create(
         user=instance.user
     )
+
 
     #创建文章时，用户金币 + 1
     if created:

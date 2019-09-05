@@ -20,6 +20,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         """返回给前端"""
         await self.send(text_data=json.dumps(text_data))
 
+
     async def disconnect(self, code):
         """断开连接"""
         self.channel_layer.group_discard("notifications", self.channel_name)

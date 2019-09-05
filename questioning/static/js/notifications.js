@@ -97,7 +97,7 @@ $(function () {
 
     function checkNotifications() {
         $.ajax({
-            url: 'notifications/latest-notifications/',
+            url: '/notifications/latest-notifications/',
             cache: false,
             success: function (data) {
                 if (!data.includes(emptyMessage)) {
@@ -107,9 +107,6 @@ $(function () {
         })
     }
 
-    function update_social_activity(id_value) {
-
-    }
 
     checkNotifications();
 
@@ -120,7 +117,7 @@ $(function () {
         } else {
             notice.popover('dispose');
             $.ajax({
-                url: 'notifications/latest-notifications/',
+                url: '/notifications/latest-notifications/',
                 cache: false,
                 success: function (data) {
                     notice.popover({
@@ -138,24 +135,24 @@ $(function () {
         return false;
     });
 
-    const ws_scheme = window.location.protocol === "https" ? "wss" : "ws"
-    const ws_path = ws_scheme + "://" + window.location.host + 'ws/notifications/'
+    const ws_scheme = window.location.protocol === "https" ? "wss" : "ws";
+    const ws_path = ws_scheme + "://" + window.location.host + '/ws/notifications/';
     const ws = new ReconnectingWebSocket(ws_path);
 
     //监听后端
     ws.onmessage = function (event) {
         const data = JSON.parse(event.data);
+        console.log(data)
         switch (data.key) {
             case "notifications":
                 if (currentUser !== data.actor_name) {
                     notice.addClass("btn-danger");
                 }
                 break;
-            case "social_update":
+            case "home_new": //首页更新
                 if (currentUser !== data.actor_name) {
-                    notice.addClass("btn-danger");
+                    $('.stream-update').show()
                 }
-                update_social_activity(data.id_value);
                 break;
             default:
                 console.log('error', data);

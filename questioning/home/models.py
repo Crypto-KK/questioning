@@ -1,5 +1,7 @@
 import uuid
 
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.conf import settings
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
@@ -26,3 +28,10 @@ class Item(CreatedUpdatedMixin, models.Model):
         verbose_name_plural = verbose_name
         unique_together = ('user', 'content_type', 'object_id')
         index_together = ('content_type', 'object_id')
+
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        super().save(force_insert=False, force_update=False, using=None,
+             update_fields=None)
+

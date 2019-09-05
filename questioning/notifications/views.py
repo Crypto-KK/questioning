@@ -1,20 +1,18 @@
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy, reverse
-from django.views.decorators.http import require_POST, require_GET
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.template.loader import render_to_string
-from django.views.generic import ListView, DeleteView
+from django.views.generic import ListView
+from django.contrib.auth import get_user_model
 
-from asgiref.sync import AsyncToSync
-from questioning.utils.helpers import ajax_required, AuthorRequiredMixin
-
+from questioning.utils.exceptions import InvalidUserInstanceException
 from questioning.notifications.models import Notification
 
+
+User = get_user_model()
 
 class NotificationUnreadListView(LoginRequiredMixin, ListView):
     '''未读通知列表'''
@@ -61,19 +59,22 @@ def mark_all_as_read(request):
     return redirect(reverse_lazy('notifications:unread'))
 
 
-def notification_handler(actor, recipient, verb, action_object, **kwargs):
-    """
-    通知处理器
+def push_notification(actor: User, recipient: User, verb: str,
+                      action_object, **kwargs) -> None:
+    """推送通知给特定用户
+
     :param actor: request.user
     :param recipient: User instance 一个或多个接受者
     :param verb: 类别
     :param action_object: 对象示例
     :param kwargs: key, id_value
     """
+    if not isinstance(actor, User) and not isinstance(recipient, User):
+        raise InvalidUserInstanceException("must be user instance")
 
     if recipient.username == action_object.user.username: #只通知接受者
 
-        key = kwargs.get('key', 'notification')
+        key = kwargs.get('key', 'notifications')
         id_value = kwargs.get('id_value', None)
 
         #记录通知内容
@@ -84,7 +85,7 @@ def notification_handler(actor, recipient, verb, action_object, **kwargs):
             action_object=action_object
         )
 
-        channel_layer = get_channel_layer(key)
+        channel_layer = get_channel_layer()
         payload = {
             'type': 'receive',
             'key': key,
