@@ -24,52 +24,33 @@ Django开发的问答网站
 基本命令
 --------------
 
-创建用户
+项目运行
 ^^^^^^^^^^^^^^^^^^^^^
 
-* 创建一个 **普通用户** 只需要去登录界面，使用邮箱注册一个用户。
+* 版本要求：Python3.6及以上版本、Django2.2.0以上版本
+* 依赖说明：使用虚拟环境，使用如下命令安装依赖::
 
-* 创建一个 **超级用户**, 使用以下命令::
+    $ pip install -r requirements.txt
+
+* 使用以下命令生成 **数据库迁移文件**::
+
+    $ python manage.py makemigrations
+
+* 使用以下命令创建 **空数据表**::
+
+    $ python manage.py migrate
+
+* 使用以下命令创建 **超级管理员账号**::
 
     $ python manage.py createsuperuser
-    
-* 使用 **超级用户** 登录xadmin
 
+* 使用以下命令在开发机中运行项目::
 
-类型检查
-^^^^^^^^^^^
+    $ python manage.py runserver 0.0.0.0:8000
 
-使用mypy运行类型检查:
+* 如需编辑项目中的配置信息，请在项目目录下编辑.env文件
 
-::
-
-  $ mypy questioning
-
-测试覆盖度
-^^^^^^^^^^^^^
-
-运行测试程序、查看你的测试覆盖度报告，生成HTML测试覆盖度报告页面::
-
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
-
-Running tests with py.test
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-::
-
-  $ pytest
-
-Live reloading and Sass CSS compilation
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Moved to `Live reloading and SASS compilation`_.
-
-.. _`Live reloading and SASS compilation`: http://cookiecutter-django.readthedocs.io/en/latest/live-reloading-and-sass-compilation.html
-
-
+* 访问/xadmin进入后台管理系统
 
 Celery
 ^^^^^^
@@ -82,11 +63,3 @@ Celery
 
     cd questioning
     celery -A config.celery_app worker -l info
-
-
-Please note: For Celery's import magic to work, it is important *where* the celery commands are run. If you are in the same folder with *manage.py*, you should be right.
-
-
-
-
-
