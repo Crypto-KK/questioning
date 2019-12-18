@@ -80,7 +80,8 @@ THIRD_PARTY_APPS = [
     'mdeditor',
     'django_comments',
 
-    'corsheaders'
+    'corsheaders',
+
 ]
 
 LOCAL_APPS = [
@@ -88,7 +89,6 @@ LOCAL_APPS = [
     "questioning.qa.apps.QaConfig",
     "questioning.articles.apps.ArticlesConfig",
     "questioning.trade.apps.TradeConfig",
-    "questioning.course.apps.CourseConfig",
     "questioning.message.apps.MessageConfig",
     "questioning.home.apps.HomeConfig",
     "questioning.notifications.apps.NotificationsConfig",
@@ -229,22 +229,7 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
 )
 
-EMAIL_HOST = env('DJANGO_EMAIL_HOST')
-EMAIL_USE_SSL = env('DJANGO_EMAIL_USE_SSL', default=True)
-EMAIL_PORT = env('DJANGO_EMAIL_PORT', default=465)
-EMAIL_HOST_USER = env('DJANGO_EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('DJANGO_EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL')
 
-"""支付宝支付配置"""
-ALIPAY_APPID = env('ALIPAY_APPID')
-ALIPAY_DEBUG = True
-
-SITE_URL = '39.108.181.193:8000'
-APP_PRIVATE_KEY_PATH = os.path.join(APPS_DIR, 'trade/keys/private_2048.txt')
-ALIPAY_PUBLIC_KEY_PATH = os.path.join(APPS_DIR, 'trade/keys/alipay_key_2048.txt')
-APP_NOTIFY_URL = f"http://{SITE_URL}/trade/alipay/return/"
-RETURN_URL = f"http://{SITE_URL}/trade/alipay/return/"
 
 # LOGGING
 # ------------------------------------------------------------------------------
@@ -321,5 +306,21 @@ CHANNEL_LAYERS = {
         },
     },
 }
-from channels.layers import get_channel_layer
 
+
+EMAIL_HOST = env('DJANGO_EMAIL_HOST')
+EMAIL_USE_SSL = env('DJANGO_EMAIL_USE_SSL', default=True)
+EMAIL_PORT = env('DJANGO_EMAIL_PORT', default=465)
+EMAIL_HOST_USER = env('DJANGO_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('DJANGO_EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL')
+
+"""支付宝支付配置"""
+ALIPAY_APPID = env('ALIPAY_APPID')
+ALIPAY_DEBUG = True
+
+SITE_URL = '39.108.181.193:8000'
+APP_PRIVATE_KEY_PATH = os.path.join(APPS_DIR, 'trade/keys/private_2048.txt')
+ALIPAY_PUBLIC_KEY_PATH = os.path.join(APPS_DIR, 'trade/keys/alipay_key_2048.txt')
+APP_NOTIFY_URL = f"http://{SITE_URL}/trade/alipay/return/"
+RETURN_URL = f"http://{SITE_URL}/trade/alipay/return/"
