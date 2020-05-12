@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-requirements-txt = "*"
 aioredis = "==1.2.0"
 amqp = "==2.5.0"
 argon2-cffi = "==19.1.0"
