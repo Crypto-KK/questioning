@@ -44,7 +44,7 @@ elasticsearch==2.0.0
 et-xmlfile==1.0.1
 future==0.17.1
 hiredis==1.0.0
-httplib2==0.13.1
+httplib2==0.18.0
 hyperlink==19.0.0
 idna==2.8
 incremental==17.5.0
